@@ -62,15 +62,16 @@ public class Game implements Screen, InputProcessor {
         font = new BitmapFont();
         font.getData().setScale(2);
 
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT,
-                camera);
-        viewport.getCamera().position.set(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f, 0);
-        viewport.apply();
+//        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT,
+//                camera);
+//        viewport.getCamera().position.set(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f, 0);
+//        viewport.apply();
 
-        batch.setProjectionMatrix(viewport.getCamera().combined);
+//        batch.setProjectionMatrix(viewport.getCamera().combined);
 
         debug_mode = false;
         test = false;
+
 
         Timer.schedule(new Timer.Task() {
                            @Override
@@ -87,7 +88,7 @@ public class Game implements Screen, InputProcessor {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        renderer.setView((OrthographicCamera) viewport.getCamera());
+        renderer.setView((OrthographicCamera) camera);
         renderer.render();
         batch.begin();
         player.render(batch);
@@ -100,8 +101,8 @@ public class Game implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        batch.setProjectionMatrix(viewport.getCamera().combined);
+//        viewport.update(width, height);
+//        batch.setProjectionMatrix(viewport.getCamera().combined);
     }
 
     @Override
