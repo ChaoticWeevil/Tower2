@@ -95,14 +95,15 @@ public class Game implements Screen, InputProcessor {
         renderer.render();
         batch.begin();
         player.render(batch);
-        renderDebug(batch);
+        if (debug_mode) renderDebug(batch);
         batch.end();
     }
 
     public void renderDebug(SpriteBatch batch) {
-        font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y, 2, Height - 20);
+        font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
+                + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
+                , 5, Height - 25);
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -186,6 +187,7 @@ public class Game implements Screen, InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
+        if (character == "`".charAt(0)) debug_mode = !debug_mode;
         return false;
     }
 
