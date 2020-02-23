@@ -35,8 +35,8 @@ public class Game implements Screen, InputProcessor {
 
     Boolean debug_mode;
     Boolean test;
-    final int WIDTH = 1366;//170;
-    final int Height = 768;//100;
+    final int WIDTH = 1366;
+    final int Height = 768;
 
     public Game(Main parent) {
         this.parent = parent;
@@ -89,7 +89,6 @@ public class Game implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         viewport.apply();
-//        batch.setProjectionMatrix(viewport.getCamera().combined);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
