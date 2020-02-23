@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import jdk.internal.org.jline.reader.Widget;
 
 
 public class Game implements Screen, InputProcessor {
@@ -36,7 +37,7 @@ public class Game implements Screen, InputProcessor {
     Boolean debug_mode;
     Boolean test;
     final int WIDTH = 1366;
-    final int Height = 768;
+    final int HEIGHT = 768;
 
     public Game(Main parent) {
         this.parent = parent;
@@ -59,12 +60,14 @@ public class Game implements Screen, InputProcessor {
         batch = new SpriteBatch();
         player = new Player(this);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, WIDTH, Height);
+        camera.setToOrtho(false, WIDTH, HEIGHT);
         camera.update();
         font = new BitmapFont();
-        viewport = new StretchViewport(WIDTH, Height,// camera);
+        viewport = new StretchViewport(WIDTH, HEIGHT,// camera);
                 new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         viewport.apply();
+        viewport.getCamera().position.x = WIDTH/2f;
+        viewport.getCamera().position.y = HEIGHT/2f;
 
         debug_mode = false;
         test = false;
@@ -88,7 +91,8 @@ public class Game implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        viewport.apply();
+        Gdx.graphics.setTitle("Tower |FPS: " + Gdx.graphics.getFramesPerSecond());
+        batch.setProjectionMatrix(viewport.getCamera().combined);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
@@ -102,7 +106,7 @@ public class Game implements Screen, InputProcessor {
     public void renderDebug(SpriteBatch batch) {
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
                 + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
-                , 5, Height - 25);
+                , 5, HEIGHT - 25);
     }
 
     @Override

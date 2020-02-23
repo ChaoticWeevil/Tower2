@@ -20,7 +20,7 @@ public class Player {
         p_right = parent.manager.get("p_right.png", Texture.class);
         sprite = new Sprite(p_right);
         sprite.setX(parent.WIDTH/2f);
-        sprite.setY(parent.Height/2f);
+        sprite.setY(parent.HEIGHT/2f);
         y_velocity = 0;
     }
 
