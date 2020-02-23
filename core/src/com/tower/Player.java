@@ -3,7 +3,6 @@ package com.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 
 public class Player {
     private Game parent;
@@ -32,7 +31,10 @@ public class Player {
     public void update() {
         if (left) {
             sprite.setTexture(p_left);
-            parent.viewport.getCamera().position.x -= 5;
+            parent.camera.position.x -= 0.2;
+//            parent.viewport.getCamera().position.x -= 5;
+
+
 //            if (sprite.getX() < parent.SCREEN_WIDTH / 2f) {
 //                sprite.translateX(-1 * speed);
 //            } else {
@@ -48,7 +50,9 @@ public class Player {
         }
         if (right) {
             sprite.setTexture(p_right);
-            parent.viewport.getCamera().position.x += 5;
+            parent.camera.position.x += 0.2;
+//            parent.viewport.getCamera().position.x += 5;
+
 //            if (sprite.getX() < parent.SCREEN_WIDTH / 2f) {
 //                sprite.translateX(speed);
 //            } else {

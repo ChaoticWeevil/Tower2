@@ -25,7 +25,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class Game implements Screen, InputProcessor {
     TiledMap map;
     AssetManager manager;
-    FitViewport viewport;
     OrthographicCamera camera;
     OrthogonalTiledMapRenderer renderer;
     SpriteBatch batch;
@@ -55,17 +54,14 @@ public class Game implements Screen, InputProcessor {
         manager.finishLoading();
 
         map = manager.get("maps/level_1.tmx", TiledMap.class);
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map, 1/70f);
         batch = new SpriteBatch();
         player = new Player(this);
-        camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 15, 10);
+        camera.update();
         font = new BitmapFont();
         font.getData().setScale(2);
-
-//        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT,
-//                camera);
-//        viewport.getCamera().position.set(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f, 0);
-//        viewport.apply();
 
 //        batch.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -97,6 +93,7 @@ public class Game implements Screen, InputProcessor {
 
     public void update() {
         player.update();
+        camera.update();
     }
 
     @Override
