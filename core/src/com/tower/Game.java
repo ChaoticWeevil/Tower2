@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 
 public class Game implements Screen, InputProcessor {
@@ -36,6 +36,7 @@ public class Game implements Screen, InputProcessor {
     Boolean test;
     final int SCREEN_HEIGHT = 768;
     final int SCREEN_WIDTH = 1366;
+    final int TILE_SIZE = 70;
 
     public Game(Main parent) {
         this.parent = parent;
@@ -54,16 +55,15 @@ public class Game implements Screen, InputProcessor {
         manager.finishLoading();
 
         map = manager.get("maps/level_1.tmx", TiledMap.class);
-        renderer = new OrthogonalTiledMapRenderer(map, 1/70f);
+        renderer = new OrthogonalTiledMapRenderer(map, 1f/TILE_SIZE);
         batch = new SpriteBatch();
         player = new Player(this);
         camera = new OrthographicCamera();
+        // 15,10 is number of tiles visible on screen
         camera.setToOrtho(false, 15, 10);
         camera.update();
         font = new BitmapFont();
         font.getData().setScale(2);
-
-//        batch.setProjectionMatrix(viewport.getCamera().combined);
 
         debug_mode = false;
         test = false;
@@ -80,6 +80,11 @@ public class Game implements Screen, InputProcessor {
         );
     }
 
+    public void update() {
+        player.update();
+        camera.update();
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -88,18 +93,17 @@ public class Game implements Screen, InputProcessor {
         renderer.render();
         batch.begin();
         player.render(batch);
+        renderDebug(batch);
         batch.end();
     }
 
-    public void update() {
-        player.update();
-        camera.update();
+    public void renderDebug(SpriteBatch batch) {
+        font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y, 1, SCREEN_HEIGHT);
     }
+
 
     @Override
     public void resize(int width, int height) {
-//        viewport.update(width, height);
-//        batch.setProjectionMatrix(viewport.getCamera().combined);
     }
 
     @Override
