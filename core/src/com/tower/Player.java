@@ -19,8 +19,8 @@ public class Player {
         p_left = parent.manager.get("p_left.png", Texture.class);
         p_right = parent.manager.get("p_right.png", Texture.class);
         sprite = new Sprite(p_right);
-        sprite.setX(parent.SCREEN_WIDTH/2f);
-        sprite.setY(parent.SCREEN_HEIGHT/2f);
+        sprite.setX(parent.WIDTH/2f);
+        sprite.setY(parent.Height/2f);
         y_velocity = 0;
     }
 
@@ -31,7 +31,7 @@ public class Player {
     public void update() {
         if (left) {
             sprite.setTexture(p_left);
-            parent.camera.position.x -= 0.2;
+            parent.camera.position.x -= 5;
 //            parent.viewport.getCamera().position.x -= 5;
 
 
@@ -50,7 +50,7 @@ public class Player {
         }
         if (right) {
             sprite.setTexture(p_right);
-            parent.camera.position.x += 0.2;
+            parent.camera.position.x += 5;
 //            parent.viewport.getCamera().position.x += 5;
 
 //            if (sprite.getX() < parent.SCREEN_WIDTH / 2f) {
