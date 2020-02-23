@@ -20,7 +20,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import jdk.internal.org.jline.reader.Widget;
 
 
 public class Game implements Screen, InputProcessor {
@@ -35,7 +34,6 @@ public class Game implements Screen, InputProcessor {
     StretchViewport viewport;
 
     Boolean debug_mode;
-    Boolean test;
     final int WIDTH = 1366;
     final int HEIGHT = 768;
 
@@ -70,8 +68,6 @@ public class Game implements Screen, InputProcessor {
         viewport.getCamera().position.y = HEIGHT/2f;
 
         debug_mode = false;
-        test = false;
-
 
         Timer.schedule(new Timer.Task() {
                            @Override
@@ -106,7 +102,7 @@ public class Game implements Screen, InputProcessor {
     public void renderDebug(SpriteBatch batch) {
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
                 + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
-                , 5, HEIGHT - 25);
+                , 5, HEIGHT - 2);
     }
 
     @Override

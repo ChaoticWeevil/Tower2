@@ -12,7 +12,6 @@ public class Player {
     boolean jump;
     Texture p_left;
     Texture p_right;
-    final int speed = 10;
     int y_velocity;
     public Player(Game parent) {
         this.parent = parent;
@@ -30,7 +29,7 @@ public class Player {
 
     public void update() {
         if (left) {
-            sprite.setTexture(p_left);
+            if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
             parent.camera.position.x -= 5;
 //            parent.viewport.getCamera().position.x -= 5;
 
@@ -49,7 +48,7 @@ public class Player {
 //            }
         }
         if (right) {
-            sprite.setTexture(p_right);
+            if (sprite.getTexture() != p_right) sprite.setTexture(p_right);
             parent.camera.position.x += 5;
 //            parent.viewport.getCamera().position.x += 5;
 
