@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -32,6 +33,7 @@ public class Game implements Screen, InputProcessor {
     BitmapFont font;
     Main parent;
     StretchViewport viewport;
+    ShapeRenderer debugRenderer;
 
     Boolean debug_mode;
     final int WIDTH = 1366;
@@ -57,6 +59,8 @@ public class Game implements Screen, InputProcessor {
         renderer = new OrthogonalTiledMapRenderer(map);
         batch = new SpriteBatch();
         player = new Player(this);
+        debugRenderer = new ShapeRenderer();
+        debugRenderer.setAutoShapeType(true);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WIDTH, HEIGHT);
         camera.update();
@@ -80,12 +84,13 @@ public class Game implements Screen, InputProcessor {
         );
     }
 
+    // Runs 100 times per second
     public void update() {
         player.update();
         camera.update();
     }
 
-    @Override
+    @Override // Runs automatically whenever libgdx decides
     public void render(float delta) {
         Gdx.graphics.setTitle("Tower |FPS: " + Gdx.graphics.getFramesPerSecond());
         batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -100,9 +105,15 @@ public class Game implements Screen, InputProcessor {
     }
 
     public void renderDebug(SpriteBatch batch) {
+        debugRenderer.setProjectionMatrix(viewport.getCamera().combined);
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
                 + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
                 , 5, HEIGHT - 2);
+        batch.end();
+        debugRenderer.begin();
+        debugRenderer.rect(player.sprite.getX(), player.sprite.getY(), player.sprite.getWidth(), player.sprite.getHeight());
+        debugRenderer.end();
+        batch.begin();
     }
 
     @Override
