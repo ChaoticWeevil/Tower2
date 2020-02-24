@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player {
+    final int max_x_velocity = 10;
+    final int max_y_velocity = 10;
     private Game parent;
     Sprite sprite;
     boolean left;
@@ -13,6 +15,7 @@ public class Player {
     Texture p_left;
     Texture p_right;
     int y_velocity;
+    int x_velocity;
     public Player(Game parent) {
         this.parent = parent;
         p_left = parent.manager.get("p_left.png", Texture.class);
@@ -31,10 +34,8 @@ public class Player {
         if (left) {
             if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
             parent.camera.position.x -= 5;
-//            parent.viewport.getCamera().position.x -= 5;
 
-
-//            if (sprite.getX() < parent.SCREEN_WIDTH / 2f) {
+//            if (sprite.getX() < parent.WIDTH / 2f) {
 //                sprite.translateX(-1 * speed);
 //            } else {
 //                parent.viewport.getCamera().translate(-1 * speed, 0, 0);

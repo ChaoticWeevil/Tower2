@@ -118,7 +118,7 @@ public class Menu implements Screen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 parent.change_screen(parent.game);
-                Gdx.input.setInputProcessor(null);
+//                Gdx.input.setInputProcessor(null);
             }
         });
         new_game.addListener(new ChangeListener() {
@@ -141,7 +141,6 @@ public class Menu implements Screen{
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
