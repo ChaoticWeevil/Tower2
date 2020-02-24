@@ -108,6 +108,7 @@ public class Game implements Screen, InputProcessor {
         debugRenderer.setProjectionMatrix(viewport.getCamera().combined);
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
                 + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
+                + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();

@@ -3,10 +3,14 @@ package com.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
-    final int max_x_velocity = 10;
-    final int max_y_velocity = 10;
+    final float max_x_velocity = 7.5f;
+    final float max_y_velocity = 1.5f;
+    final float acceleration = 0.5f;
+    final float damping = 0.25f;
+    final float air_damping = 0.125f;
     private Game parent;
     Sprite sprite;
     boolean left;
@@ -14,8 +18,8 @@ public class Player {
     boolean jump;
     Texture p_left;
     Texture p_right;
-    int y_velocity;
-    int x_velocity;
+    float y_velocity;
+    float x_velocity;
     public Player(Game parent) {
         this.parent = parent;
         p_left = parent.manager.get("p_left.png", Texture.class);
@@ -31,9 +35,11 @@ public class Player {
     }
 
     public void update() {
+        boolean grounded = isGrounded();
         if (left) {
             if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
-            parent.camera.position.x -= 5;
+//            parent.camera.position.x -= 5;
+            x_velocity -= acceleration;
 
 //            if (sprite.getX() < parent.WIDTH / 2f) {
 //                sprite.translateX(-1 * speed);
@@ -50,7 +56,8 @@ public class Player {
         }
         if (right) {
             if (sprite.getTexture() != p_right) sprite.setTexture(p_right);
-            parent.camera.position.x += 5;
+//            parent.camera.position.x += 5;
+            x_velocity += acceleration;
 //            parent.viewport.getCamera().position.x += 5;
 
 //            if (sprite.getX() < parent.SCREEN_WIDTH / 2f) {
@@ -78,5 +85,26 @@ public class Player {
 //                y_velocity = 20;
 //            }
         }
+        if (x_velocity > 0) {
+            if (grounded) x_velocity -= damping;
+            else x_velocity -= air_damping;
+            if (x_velocity < 0) x_velocity = 0;
+        }
+        else if (x_velocity < 0) {
+            if (grounded) x_velocity += damping;
+            else x_velocity += air_damping;
+            if (x_velocity > 0) x_velocity = 0;
+        }
+
+        x_velocity = MathUtils.clamp(x_velocity, -max_x_velocity, max_x_velocity);
+        y_velocity = MathUtils.clamp(y_velocity, -max_y_velocity, max_y_velocity);
+
+        parent.camera.position.x += x_velocity;
+//        sprite.setPosition(sprite.getX() + x_velocity, sprite.getY() + y_velocity);
+//        parent.camera.position.x = sprite.getX();
+    }
+
+    public boolean isGrounded() { // TODO
+        return true;
     }
 }
