@@ -179,10 +179,8 @@ public class Game implements Screen, InputProcessor {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             rectangle.y = MAP_HEIGHT - rectangle.y;
             try {
-                if (rect.overlaps(rectangle)) {
-                    if (check.equals("none") || (Boolean) object.getProperties().get(check)) {
-                        tiles.add(rectangle);
-                    }
+                if (rect.overlaps(rectangle) && (check.equals("none") || (Boolean) object.getProperties().get(check))) {
+                    tiles.add(rectangle);
                 }
             }
             catch (NullPointerException ignored) {}
