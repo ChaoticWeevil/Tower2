@@ -16,7 +16,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -177,28 +176,11 @@ public class Game implements Screen, InputProcessor {
         for (MapObject object : objects) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             rectangle.y = MAP_HEIGHT - rectangle.y;
-            if (rect.overlaps(rectangle)) {
+            if (rect.overlaps(rectangle) && (Boolean) object.getProperties().get(check)) {
                 tiles.add(rectangle);
             }
         }
         return  tiles;
-    }
-
-    public Boolean collisionCheck(Rectangle rect, String check) {
-        MapLayer layer = map.getLayers().get("Collision_Layer");
-        MapObjects objects = layer.getObjects();
-        for (MapObject object : objects) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            Boolean platform = (Boolean) object.getProperties().get(check);
-            try {
-                if (rectangle.overlaps(rect) && platform) {
-                    return true;
-                }
-            } catch (Exception e) {
-                System.out.println("ERROR: collisionCheck error - " + e);
-            }
-        }
-        return false;
     }
 
     // Unused Methods

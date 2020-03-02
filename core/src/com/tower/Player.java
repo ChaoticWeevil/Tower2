@@ -27,7 +27,7 @@ public class Player {
     float y_velocity;
     float x_velocity;
     boolean grounded = false;
-    private Array<Rectangle> tiles = new Array<Rectangle>();
+    private Array<Rectangle> tiles = new Array<>();
     public Player(Game parent) {
         this.parent = parent;
         p_left = parent.manager.get("p_left.png", Texture.class);
