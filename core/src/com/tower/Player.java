@@ -54,9 +54,11 @@ public class Player {
             parent.test = false;
         }
         else {
-            grounded = true;
+            if (y_velocity < 0) {
+                parent.test = true;
+                grounded = true;
+            }
             y_velocity = 0;
-            parent.test = true;
         }
 
         if (left) {
