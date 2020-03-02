@@ -1,16 +1,26 @@
 package com.tower;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import org.w3c.dom.css.Rect;
 
 public class Player {
-    final float max_x_velocity = 7.5f;
-    final float max_y_velocity = 1.5f;
-    final float acceleration = 0.5f;
-    final float damping = 0.25f;
-    final float air_damping = 0.125f;
+    // Physics values
+    final float MAX_X_VELOCITY = 7.5f;
+    final float MAX_Y_VELOCITY = 10f;
+    final float ACCELERATION = 0.5f;
+    final float DAMPING = 0.25f;
+    final float AIR_DAMPING = 0.125f;
+    final float GRAVITY = -0.2f;
+    final float JUMP_SPEED = 9;
+
     private Game parent;
     Sprite sprite;
     boolean left;
@@ -20,6 +30,8 @@ public class Player {
     Texture p_right;
     float y_velocity;
     float x_velocity;
+    boolean grounded = false;
+    private Array<Rectangle> tiles = new Array<Rectangle>();
     public Player(Game parent) {
         this.parent = parent;
         p_left = parent.manager.get("p_left.png", Texture.class);
@@ -35,76 +47,65 @@ public class Player {
     }
 
     public void update() {
-        boolean grounded = isGrounded();
+        Rectangle rect = parent.rectPool.obtain();
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH/2f,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT/2f + y_velocity - 1,
+                sprite.getWidth(), sprite.getHeight());
+        tiles = parent.getTiles(rect, tiles, "platform");
+        tiles = parent.getTiles(rect, tiles, "platform");
+        if (tiles.isEmpty()) {
+            grounded = false;
+            parent.test = false;
+        }
+        else {
+            grounded = true;
+            y_velocity = 0;
+            parent.test = true;
+        }
+
         if (left) {
             if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
-//            parent.camera.position.x -= 5;
-            x_velocity -= acceleration;
-
-//            if (sprite.getX() < parent.WIDTH / 2f) {
-//                sprite.translateX(-1 * speed);
-//            } else {
-//                parent.viewport.getCamera().translate(-1 * speed, 0, 0);
-//                if (parent.viewport.getCamera().position.x < parent.SCREEN_WIDTH / 2f) {
-//                    parent.viewport.getCamera().translate(speed, 0, 0);
-//                    sprite.translateX(-1 * speed);
-//                    if (sprite.getX() < 0) {
-//                        sprite.translateX(speed);
-//                    }
-//                }
-//            }
+            x_velocity -= ACCELERATION;
         }
         if (right) {
             if (sprite.getTexture() != p_right) sprite.setTexture(p_right);
-//            parent.camera.position.x += 5;
-            x_velocity += acceleration;
-//            parent.viewport.getCamera().position.x += 5;
-
-//            if (sprite.getX() < parent.SCREEN_WIDTH / 2f) {
-//                sprite.translateX(speed);
-//            } else {
-//                parent.viewport.getCamera().translate(speed, 0, 0);
-//                if (parent.viewport.getCamera().position.x > parent.map.getProperties().get
-//                        ("width", Integer.class) * 70 - parent.SCREEN_WIDTH / 2f) {
-//                    parent.viewport.getCamera().translate(speed * -1, 0, 0);
-//                    sprite.translateX(speed);
-//                    if (sprite.getX() + sprite.getTexture().getWidth() > parent.SCREEN_WIDTH) {
-//                        sprite.translateX(speed);
-//                    }
-//                }
-//            }
+            x_velocity += ACCELERATION;
         }
         if (jump) {
-//            Rectangle player_rect = new Rectangle();
-//            player_rect.set(sprite.getX() + parent.viewport.getCamera().position.x - parent.SCREEN_WIDTH / 2f,
-//                    sprite.getY() - 1 + parent.viewport.getCamera().position.y - parent.SCREEN_HEIGHT / 2f,
-//                    sprite.getTexture().getWidth(), sprite.getTexture().getHeight());
-//
-//            // Check if on ground
-//            if (parent.collisionCheck(player_rect, "platform") || parent.collisionCheck(player_rect, "ladder")) {
-//                y_velocity = 20;
-//            }
+            jump = false;
+            if (grounded) y_velocity += JUMP_SPEED;
         }
+
+
         if (x_velocity > 0) {
-            if (grounded) x_velocity -= damping;
-            else x_velocity -= air_damping;
+            if (grounded) x_velocity -= DAMPING;
+            else x_velocity -= AIR_DAMPING;
             if (x_velocity < 0) x_velocity = 0;
         }
         else if (x_velocity < 0) {
-            if (grounded) x_velocity += damping;
-            else x_velocity += air_damping;
+            if (grounded) x_velocity += DAMPING;
+            else x_velocity += AIR_DAMPING;
             if (x_velocity > 0) x_velocity = 0;
         }
 
-        x_velocity = MathUtils.clamp(x_velocity, -max_x_velocity, max_x_velocity);
-        y_velocity = MathUtils.clamp(y_velocity, -max_y_velocity, max_y_velocity);
+        if (!grounded) y_velocity += GRAVITY;
+
+
+        x_velocity = MathUtils.clamp(x_velocity, -MAX_X_VELOCITY, MAX_X_VELOCITY);
+        y_velocity = MathUtils.clamp(y_velocity, -MAX_Y_VELOCITY, MAX_Y_VELOCITY);
+
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH/2f + x_velocity,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT/2f,
+                sprite.getWidth(), sprite.getHeight());
+        tiles = parent.getTiles(rect, tiles, "platform");
+        tiles = parent.getTiles(rect, tiles, "platform");
+        if (! tiles.isEmpty()) {
+            x_velocity = 0;
+        }
+
 
         parent.camera.position.x += x_velocity;
-//        sprite.setPosition(sprite.getX() + x_velocity, sprite.getY() + y_velocity);
-//        parent.camera.position.x = sprite.getX();
+        parent.camera.position.y += y_velocity;
     }
 
-    public boolean isGrounded() { // TODO
-        return true;
-    }
 }

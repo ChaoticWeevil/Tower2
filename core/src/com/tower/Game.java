@@ -16,9 +16,12 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -34,10 +37,19 @@ public class Game implements Screen, InputProcessor {
     Main parent;
     StretchViewport viewport;
     ShapeRenderer debugRenderer;
+    Pool<Rectangle> rectPool = new Pool<Rectangle>() {
+        @Override
+        protected Rectangle newObject() {
+            return new Rectangle();
+        }
+    };
 
     Boolean debug_mode;
+    Boolean test = false;
+
     final int WIDTH = 1366;
     final int HEIGHT = 768;
+    int MAP_HEIGHT;
 
     public Game(Main parent) {
         this.parent = parent;
@@ -46,6 +58,7 @@ public class Game implements Screen, InputProcessor {
         manager.setLoader(TiledMap.class, new TmxMapLoader());
 
         manager.load("maps/level_1.tmx", TiledMap.class);
+        manager.load("maps/test.tmx", TiledMap.class);
         manager.load("heart.png", Texture.class);
         manager.load("half_heart.png", Texture.class);
         manager.load("up.png", Texture.class);
@@ -68,10 +81,12 @@ public class Game implements Screen, InputProcessor {
         viewport = new StretchViewport(WIDTH, HEIGHT,// camera);
                 new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         viewport.apply();
-        viewport.getCamera().position.x = WIDTH/2f;
-        viewport.getCamera().position.y = HEIGHT/2f;
+        viewport.getCamera().position.x = WIDTH / 2f;
+        viewport.getCamera().position.y = HEIGHT / 2f;
 
         debug_mode = false;
+
+        MAP_HEIGHT = map.getProperties().get("height", Integer.class) * 70;
 
         Timer.schedule(new Timer.Task() {
                            @Override
@@ -107,8 +122,9 @@ public class Game implements Screen, InputProcessor {
     public void renderDebug(SpriteBatch batch) {
         debugRenderer.setProjectionMatrix(viewport.getCamera().combined);
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
-                + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
-                + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
+                        + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
+                        + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
+                        + "\nTest: " + test
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
@@ -152,6 +168,20 @@ public class Game implements Screen, InputProcessor {
             player.jump = false;
         }
         return false;
+    }
+
+    public Array<Rectangle> getTiles(Rectangle rect, Array<Rectangle> tiles, String check) {
+        tiles.clear();
+        MapLayer layer = map.getLayers().get("Collision_Layer");
+        MapObjects objects = layer.getObjects();
+        for (MapObject object : objects) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            rectangle.y = MAP_HEIGHT - rectangle.y;
+            if (rect.overlaps(rectangle)) {
+                tiles.add(rectangle);
+            }
+        }
+        return  tiles;
     }
 
     public Boolean collisionCheck(Rectangle rect, String check) {
