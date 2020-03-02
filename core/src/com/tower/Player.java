@@ -51,6 +51,7 @@ public class Player {
     }
 
     public void update() {
+        // Manage gameObjects
         Rectangle rect = parent.rectPool.obtain();
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
@@ -76,6 +77,9 @@ public class Player {
                 overlappedObjects.add(o);
                 o.onEnter();
             }
+        }
+        for (gameObject o : overlappedObjects) {
+            o.update();
         }
 
 
