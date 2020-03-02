@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.tower.gameObjects.Ladder;
+import com.tower.gameObjects.gameObject;
 
 public class Player {
     // Physics values
@@ -27,14 +29,20 @@ public class Player {
     float y_velocity;
     float x_velocity;
     boolean grounded = false;
-    private Array<Rectangle> tiles = new Array<>();
+    public boolean onLadder = false;
+    private Array<Rectangle> objects = new Array<>();
+    private Array<gameObject> overlappedObjects;
+    private Array<gameObject> tempObjects;
+
     public Player(Game parent) {
         this.parent = parent;
         p_left = parent.manager.get("p_left.png", Texture.class);
         p_right = parent.manager.get("p_right.png", Texture.class);
+        overlappedObjects = new Array<>();
+        tempObjects = new Array<>();
         sprite = new Sprite(p_right);
-        sprite.setX(parent.WIDTH/2f);
-        sprite.setY(parent.HEIGHT/2f);
+        sprite.setX(parent.WIDTH / 2f);
+        sprite.setY(parent.HEIGHT / 2f);
         y_velocity = 0;
     }
 
@@ -44,16 +52,42 @@ public class Player {
 
     public void update() {
         Rectangle rect = parent.rectPool.obtain();
-        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH/2f,
-                sprite.getY() + parent.camera.position.y - parent.HEIGHT/2f + y_velocity - 1,
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                 sprite.getWidth(), sprite.getHeight());
-        tiles = parent.getTiles(rect, tiles, "platform");
-        tiles = parent.getTiles(rect, tiles, "platform");
-        if (tiles.isEmpty()) {
+        tempObjects.clear();
+        for (String check : parent.gameObjects) {
+            objects = parent.getTiles(rect, objects, check);
+            objects = parent.getTiles(rect, objects, check);
+            for (Rectangle r : objects) {
+                if (check.equals("Ladder")) {
+                    tempObjects.add(new Ladder(parent, r.x, r.y, r.width, r.height));
+                }
+            }
+        }
+        for (gameObject o : overlappedObjects) {
+            if (!tempObjects.contains(o, false)) {
+                o.onExit();
+                overlappedObjects.removeValue(o, false);
+            }
+        }
+        for (gameObject o : tempObjects) {
+            if (!overlappedObjects.contains(o, false)) {
+                overlappedObjects.add(o);
+                o.onEnter();
+            }
+        }
+
+
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity - 1,
+                sprite.getWidth(), sprite.getHeight());
+        objects = parent.getTiles(rect, objects, "platform");
+        objects = parent.getTiles(rect, objects, "platform");
+        if (objects.isEmpty()) {
             grounded = false;
             parent.test = false;
-        }
-        else {
+        } else {
             if (y_velocity < 0) {
                 parent.test = true;
                 grounded = true;
@@ -70,8 +104,7 @@ public class Player {
             x_velocity += ACCELERATION;
         }
         if (jump) {
-            jump = false;
-            if (grounded) y_velocity += JUMP_SPEED;
+            if (grounded || onLadder) y_velocity += JUMP_SPEED;
         }
 
 
@@ -79,8 +112,7 @@ public class Player {
             if (grounded) x_velocity -= DAMPING;
             else x_velocity -= AIR_DAMPING;
             if (x_velocity < 0) x_velocity = 0;
-        }
-        else if (x_velocity < 0) {
+        } else if (x_velocity < 0) {
             if (grounded) x_velocity += DAMPING;
             else x_velocity += AIR_DAMPING;
             if (x_velocity > 0) x_velocity = 0;
@@ -92,12 +124,12 @@ public class Player {
         x_velocity = MathUtils.clamp(x_velocity, -MAX_X_VELOCITY, MAX_X_VELOCITY);
         y_velocity = MathUtils.clamp(y_velocity, -MAX_Y_VELOCITY, MAX_Y_VELOCITY);
 
-        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH/2f + x_velocity,
-                sprite.getY() + parent.camera.position.y - parent.HEIGHT/2f,
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                 sprite.getWidth(), sprite.getHeight());
-        tiles = parent.getTiles(rect, tiles, "platform");
-        tiles = parent.getTiles(rect, tiles, "platform");
-        if (! tiles.isEmpty()) {
+        objects = parent.getTiles(rect, objects, "platform");
+        objects = parent.getTiles(rect, objects, "platform");
+        if (!objects.isEmpty()) {
             x_velocity = 0;
         }
 

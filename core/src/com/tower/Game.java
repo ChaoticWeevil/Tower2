@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.tower.gameObjects.gameObject;
 
 
 public class Game implements Screen, InputProcessor {
@@ -31,7 +32,7 @@ public class Game implements Screen, InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRenderer renderer;
     SpriteBatch batch;
-    Player player;
+    public Player player;
     BitmapFont font;
     Main parent;
     StretchViewport viewport;
@@ -45,6 +46,8 @@ public class Game implements Screen, InputProcessor {
 
     Boolean debug_mode;
     Boolean test = false;
+
+    String[] gameObjects = {"Ladder"};
 
     final int WIDTH = 1366;
     final int HEIGHT = 768;
@@ -176,9 +179,15 @@ public class Game implements Screen, InputProcessor {
         for (MapObject object : objects) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             rectangle.y = MAP_HEIGHT - rectangle.y;
-            if (rect.overlaps(rectangle) && (Boolean) object.getProperties().get(check)) {
-                tiles.add(rectangle);
+            try {
+                if (rect.overlaps(rectangle)) {
+                    if (check.equals("none") || (Boolean) object.getProperties().get(check)) {
+                        tiles.add(rectangle);
+                    }
+                }
             }
+            catch (NullPointerException ignored) {}
+
         }
         return  tiles;
     }
