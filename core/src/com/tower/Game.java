@@ -47,7 +47,7 @@ public class Game implements Screen, InputProcessor {
     Boolean debug_mode;
     Boolean test = false;
 
-    String[] gameObjects = {"Ladder"};
+    String[] gameObjects = {"Ladder", "Death"};
 
     final int WIDTH = 1366;
     final int HEIGHT = 768;
@@ -109,9 +109,9 @@ public class Game implements Screen, InputProcessor {
 
     @Override // Runs automatically whenever libgdx decides
     public void render(float delta) {
-        Gdx.graphics.setTitle("Tower |FPS: " + Gdx.graphics.getFramesPerSecond());
+        Gdx.graphics.setTitle("Tower | FPS: " + Gdx.graphics.getFramesPerSecond());
         batch.setProjectionMatrix(viewport.getCamera().combined);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(.5f, .7f, .9f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();

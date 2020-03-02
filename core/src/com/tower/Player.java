@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.tower.gameObjects.Death;
 import com.tower.gameObjects.Ladder;
 import com.tower.gameObjects.gameObject;
 
@@ -63,6 +64,9 @@ public class Player {
             for (Rectangle r : objects) {
                 if (check.equals("Ladder")) {
                     tempObjects.add(new Ladder(parent, r.x, r.y, r.width, r.height));
+                }
+                else if (check.equals("Death")) {
+                    tempObjects.add(new Death(parent));
                 }
             }
         }
@@ -140,6 +144,16 @@ public class Player {
 
         parent.camera.position.x += x_velocity;
         parent.camera.position.y += y_velocity;
+
+        if (parent.camera.position.y < -100) {
+            respawn();
+        }
+    }
+
+    public void respawn () {
+        parent.camera.position.x = parent.WIDTH / 2f;
+        parent.camera.position.y = parent.HEIGHT /2f;
+        y_velocity = x_velocity = 0;
     }
 
 }
