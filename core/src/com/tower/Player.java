@@ -141,6 +141,20 @@ public class Player {
             x_velocity = 0;
         }
 
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity + 1,
+                sprite.getWidth(), sprite.getHeight());
+        objects = parent.getTiles(rect, objects, "platform");
+        objects = parent.getTiles(rect, objects, "platform");
+        if (!objects.isEmpty()) {
+            if (y_velocity > 0) {
+                y_velocity = 0;
+            }
+        }
+
+
+
+
 
         parent.camera.position.x += x_velocity;
         parent.camera.position.y += y_velocity;
@@ -149,6 +163,8 @@ public class Player {
             respawn();
         }
     }
+
+
 
     public void respawn () {
         parent.camera.position.x = parent.WIDTH / 2f;

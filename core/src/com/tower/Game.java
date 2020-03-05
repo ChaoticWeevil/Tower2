@@ -125,7 +125,7 @@ public class Game implements Screen, InputProcessor {
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
                         + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
                         + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
-                        + "\nTest: " + test
+                        + "\nTest: " + player.onLadder
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
