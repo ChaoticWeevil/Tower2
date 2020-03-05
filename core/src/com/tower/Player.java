@@ -171,14 +171,20 @@ public class Player {
     }
 
     public void spawn () {
-        spawn_location = new Rectangle();
-        spawn_location.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
-        objects = parent.getTiles(spawn_location, objects, "spawn");
-        objects = parent.getTiles(spawn_location, objects, "spawn");
-        spawn_location.set(objects.first());
-        spawn_location.y += 1;
-        parent.camera.position.x = spawn_location.x;
-        parent.camera.position.y = spawn_location.y;
-        objects.clear();
+        try {
+            spawn_location = new Rectangle();
+            spawn_location.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
+            objects = parent.getTiles(spawn_location, objects, "spawn");
+            objects = parent.getTiles(spawn_location, objects, "spawn");
+            spawn_location.set(objects.first());
+            spawn_location.y += 1;
+            parent.camera.position.x = spawn_location.x;
+            parent.camera.position.y = spawn_location.y;
+            objects.clear();
+        }
+        catch (Exception ignored) {
+            parent.camera.position.x = parent.WIDTH/2f;
+            parent.camera.position.y = parent.HEIGHT/2f;
+        }
     }
 }
