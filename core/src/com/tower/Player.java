@@ -16,9 +16,9 @@ public class Player {
     final float MAX_Y_VELOCITY = 10f;
     final float ACCELERATION = 0.5f;
     final float DAMPING = 0.25f;
-    final float AIR_DAMPING = 0.125f;
+    final float AIR_DAMPING = 0.1875f;
     final float GRAVITY = -0.2f;
-    final float JUMP_SPEED = 9;
+    public final float JUMP_SPEED = 9;
 
     private Game parent;
     Sprite sprite;
@@ -27,7 +27,7 @@ public class Player {
     boolean jump;
     Texture p_left;
     Texture p_right;
-    float y_velocity;
+    public float y_velocity;
     float x_velocity;
     boolean grounded = false;
     public boolean onLadder = false;

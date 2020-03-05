@@ -201,22 +201,22 @@
     <property name="platform" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="174" name="Death" x="910" y="1674" width="210" height="6">
+  <object id="174" name="Death" x="910" y="1660" width="210" height="20">
    <properties>
     <property name="Death" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="175" name="Death" x="1470" y="1678" width="1886" height="2">
+  <object id="175" name="Death" x="1470" y="1660" width="1886" height="20">
    <properties>
     <property name="Death" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="176" name="Death" x="4340" y="1674" width="900.667" height="6">
+  <object id="176" name="Death" x="4340" y="1658" width="900.667" height="22">
    <properties>
     <property name="Death" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="177" name="Death" x="3780" y="1674" width="276.667" height="6">
+  <object id="177" name="Death" x="3780" y="1652" width="276.667" height="28">
    <properties>
     <property name="Death" type="bool" value="true"/>
    </properties>
