@@ -34,6 +34,7 @@ public class Player {
     private Array<Rectangle> objects = new Array<>();
     private Array<gameObject> overlappedObjects;
     private Array<gameObject> tempObjects;
+    Rectangle spawn_location;
 
     public Player(Game parent) {
         this.parent = parent;
@@ -45,6 +46,9 @@ public class Player {
         sprite.setX(parent.WIDTH / 2f);
         sprite.setY(parent.HEIGHT / 2f);
         y_velocity = 0;
+
+        spawn();
+
     }
 
     public void render(Batch batch) {
@@ -152,10 +156,6 @@ public class Player {
             }
         }
 
-
-
-
-
         parent.camera.position.x += x_velocity;
         parent.camera.position.y += y_velocity;
 
@@ -164,12 +164,21 @@ public class Player {
         }
     }
 
-
-
     public void respawn () {
-        parent.camera.position.x = parent.WIDTH / 2f;
-        parent.camera.position.y = parent.HEIGHT /2f;
-        y_velocity = x_velocity = 0;
+        parent.camera.position.x = spawn_location.x;
+        parent.camera.position.y = spawn_location.y;
+        x_velocity = y_velocity = 0;
     }
 
+    public void spawn () {
+        spawn_location = new Rectangle();
+        spawn_location.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
+        objects = parent.getTiles(spawn_location, objects, "spawn");
+        objects = parent.getTiles(spawn_location, objects, "spawn");
+        spawn_location.set(objects.first());
+        spawn_location.y += 1;
+        parent.camera.position.x = spawn_location.x;
+        parent.camera.position.y = spawn_location.y;
+        objects.clear();
+    }
 }

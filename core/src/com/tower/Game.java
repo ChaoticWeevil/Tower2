@@ -51,6 +51,7 @@ public class Game implements Screen, InputProcessor {
     final int WIDTH = 1366;
     final int HEIGHT = 768;
     int MAP_HEIGHT;
+    int MAP_WIDTH;
 
     public Game(Main parent) {
         this.parent = parent;
@@ -72,7 +73,7 @@ public class Game implements Screen, InputProcessor {
         map = manager.get("maps/level_1.tmx", TiledMap.class);
         renderer = new OrthogonalTiledMapRenderer(map);
         batch = new SpriteBatch();
-        player = new Player(this);
+
         debugRenderer = new ShapeRenderer();
         debugRenderer.setAutoShapeType(true);
         camera = new OrthographicCamera();
@@ -88,6 +89,8 @@ public class Game implements Screen, InputProcessor {
         debug_mode = false;
 
         MAP_HEIGHT = map.getProperties().get("height", Integer.class) * 70;
+        MAP_WIDTH = map.getProperties().get("width", Integer.class) * 70;
+        player = new Player(this);
 
         Timer.schedule(new Timer.Task() {
                            @Override
