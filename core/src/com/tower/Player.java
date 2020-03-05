@@ -12,13 +12,13 @@ import com.tower.gameObjects.gameObject;
 
 public class Player {
     // Physics values
-    final float MAX_X_VELOCITY = 7.5f;
-    final float MAX_Y_VELOCITY = 10f;
+    final float MAX_X_VELOCITY = 6.5f;
+    final float MAX_Y_VELOCITY = 8f;
     final float ACCELERATION = 0.5f;
     final float DAMPING = 0.25f;
-    final float AIR_DAMPING = 0.1875f;
+    final float AIR_DAMPING = 0.2f;
     final float GRAVITY = -0.2f;
-    public final float JUMP_SPEED = 9;
+    public final float JUMP_SPEED = 7.8f;
 
     private Game parent;
     Sprite sprite;
