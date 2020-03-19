@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.tower.gameObjects.Death;
+import com.tower.gameObjects.Exit;
 import com.tower.gameObjects.Ladder;
 import com.tower.gameObjects.gameObject;
 
@@ -66,11 +67,16 @@ public class Player {
             objects = parent.getTiles(rect, objects, check);
             objects = parent.getTiles(rect, objects, check);
             for (Rectangle r : objects) {
-                if (check.equals("Ladder")) {
-                    tempObjects.add(new Ladder(parent, r.x, r.y, r.width, r.height));
-                }
-                else if (check.equals("Death")) {
-                    tempObjects.add(new Death(parent));
+                switch (check) {
+                    case "Ladder":
+                        tempObjects.add(new Ladder(parent, r.x, r.y, r.width, r.height));
+                        break;
+                    case "Death":
+                        tempObjects.add(new Death(parent));
+                        break;
+                    case "Exit":
+                        tempObjects.add(new Exit(parent));
+                        break;
                 }
             }
         }
@@ -164,13 +170,13 @@ public class Player {
         }
     }
 
-    public void respawn () {
+    public void respawn() {
         parent.camera.position.x = spawn_location.x;
         parent.camera.position.y = spawn_location.y;
         x_velocity = y_velocity = 0;
     }
 
-    public void spawn () {
+    public void spawn() {
         try {
             spawn_location = new Rectangle();
             spawn_location.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
@@ -181,10 +187,11 @@ public class Player {
             parent.camera.position.x = spawn_location.x;
             parent.camera.position.y = spawn_location.y;
             objects.clear();
+        } catch (Exception ignored) {
+            parent.camera.position.x = parent.WIDTH / 2f;
+            parent.camera.position.y = parent.HEIGHT / 2f;
         }
-        catch (Exception ignored) {
-            parent.camera.position.x = parent.WIDTH/2f;
-            parent.camera.position.y = parent.HEIGHT/2f;
-        }
+        y_velocity = x_velocity = 0;
+        left = right = jump = false;
     }
 }

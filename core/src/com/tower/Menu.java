@@ -1,4 +1,5 @@
 package com.tower;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,9 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class Menu implements Screen{
+public class Menu implements Screen {
     FitViewport viewport;
     Stage main_stage;
     Stage play_stage;
@@ -25,7 +25,8 @@ public class Menu implements Screen{
     TextButton continue_game;
     TextButton back;
     TextButton back2;
-    public Menu(Main tower){
+
+    public Menu(Main tower) {
         viewport = new FitViewport(1366f, 768f,
                 new OrthographicCamera(1366f, 768f));
         final int SCREEN_HEIGHT = 768;
@@ -42,17 +43,17 @@ public class Menu implements Screen{
         // Main Stage
         Label title = new Label("The Tower", skin);
         title.setFontScale(3);
-        title.setPosition(SCREEN_WIDTH /2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 /4f);
+        title.setPosition(SCREEN_WIDTH / 2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 / 4f);
         main_stage.addActor(title);
 
         play = new TextButton("Play", skin);
         play.setSize(SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 8f);
-        play.setPosition(SCREEN_WIDTH /2f - play.getWidth() / 2, SCREEN_HEIGHT /2f);
+        play.setPosition(SCREEN_WIDTH / 2f - play.getWidth() / 2, SCREEN_HEIGHT / 2f);
 
 
         exit = new TextButton("Exit", skin);
         exit.setSize(SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 8f);
-        exit.setPosition(SCREEN_WIDTH /2f - exit.getWidth() / 2, SCREEN_HEIGHT /2f - 100);
+        exit.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 100);
 
 
         main_stage.addActor(play);
@@ -70,10 +71,10 @@ public class Menu implements Screen{
         new_game.setSize(SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 8f);
         back.setSize(SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 8f);
 
-        title2.setPosition(SCREEN_WIDTH /2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 /4f);
-        continue_game.setPosition(SCREEN_WIDTH /2f - play.getWidth() / 2, SCREEN_HEIGHT /2f);
-        new_game.setPosition(SCREEN_WIDTH /2f - exit.getWidth() / 2, SCREEN_HEIGHT /2f - 100);
-        back.setPosition(SCREEN_WIDTH /2f - exit.getWidth() / 2, SCREEN_HEIGHT /2f - 200);
+        title2.setPosition(SCREEN_WIDTH / 2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 / 4f);
+        continue_game.setPosition(SCREEN_WIDTH / 2f - play.getWidth() / 2, SCREEN_HEIGHT / 2f);
+        new_game.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 100);
+        back.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 200);
 
         play_stage.addActor(title2);
         play_stage.addActor(new_game);
@@ -87,8 +88,8 @@ public class Menu implements Screen{
         game_over.setFontScale(3);
         back2.setSize(SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 8f);
 
-        game_over.setPosition(SCREEN_WIDTH /2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 /4f);
-        back2.setPosition(SCREEN_WIDTH /2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f);
+        game_over.setPosition(SCREEN_WIDTH / 2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 / 4f);
+        back2.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f);
 
 
         death_stage.addActor(game_over);
@@ -124,7 +125,7 @@ public class Menu implements Screen{
         new_game.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.game = new Game(parent);
+                parent.game = new Game(parent, parent.level_set_1);
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);
                 Gdx.input.setInputProcessor(parent.game);

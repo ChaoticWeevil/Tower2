@@ -46,31 +46,33 @@ public class Game implements Screen, InputProcessor {
     Boolean debug_mode;
     Boolean test = false;
 
-    String[] gameObjects = {"Ladder", "Death"};
+    String[] level_set;
+    String[] gameObjects = {"Ladder", "Death", "Exit"};
 
     final int WIDTH = 1366;
     final int HEIGHT = 768;
     int MAP_HEIGHT;
     int MAP_WIDTH;
+    public int level_number = 0;
 
-    public Game(Main parent) {
+    public Game(Main parent, String[] level_set) {
         this.parent = parent;
+        this.level_set = level_set;
         // Asset loading
         manager = new AssetManager();
         manager.setLoader(TiledMap.class, new TmxMapLoader());
 
-        manager.load("maps/level_1.tmx", TiledMap.class);
-        manager.load("maps/test.tmx", TiledMap.class);
-        manager.load("heart.png", Texture.class);
-        manager.load("half_heart.png", Texture.class);
-        manager.load("up.png", Texture.class);
-        manager.load("left.png", Texture.class);
-        manager.load("right.png", Texture.class);
-        manager.load("p_right.png", Texture.class);
-        manager.load("p_left.png", Texture.class);
+        for (int i = 0; i < level_set.length; i++) {
+            level_set[i] = "maps/" + level_set[i];
+            manager.load(level_set[i], TiledMap.class);
+        }
+        String[] art = {"heart.png", "half_heart.png", "up.png", "left.png", "right.png", "p_right.png", "p_left.png"};
+        for (String a : art) {
+            manager.load(a, Texture.class);
+        }
         manager.finishLoading();
 
-        map = manager.get("maps/level_1.tmx", TiledMap.class);
+        map = manager.get(level_set[level_number], TiledMap.class);
         renderer = new OrthogonalTiledMapRenderer(map);
         batch = new SpriteBatch();
 
@@ -185,12 +187,20 @@ public class Game implements Screen, InputProcessor {
                 if (rect.overlaps(rectangle) && (check.equals("none") || (Boolean) object.getProperties().get(check))) {
                     tiles.add(rectangle);
                 }
+            } catch (NullPointerException ignored) {
             }
-            catch (NullPointerException ignored) {}
 
         }
-        return  tiles;
+        return tiles;
     }
+
+    public void nextLevel() {
+        level_number++;
+        map = manager.get(level_set[level_number], TiledMap.class);
+        renderer.setMap(map);
+        player.spawn();
+    }
+
 
     // Unused Methods
     @Override
