@@ -196,9 +196,11 @@ public class Game implements Screen, InputProcessor {
 
     public void nextLevel() {
         level_number++;
-        map = manager.get(level_set[level_number], TiledMap.class);
-        renderer.setMap(map);
-        player.spawn();
+        if (level_number < level_set.length) {
+            map = manager.get(level_set[level_number], TiledMap.class);
+            renderer.setMap(map);
+            player.spawn();
+        }
     }
 
 
