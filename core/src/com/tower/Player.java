@@ -29,26 +29,23 @@ public class Player {
     boolean jump;
     Texture p_left;
     Texture p_right;
-    public float y_velocity;
+    public float y_velocity = 0;
     float x_velocity;
     boolean grounded = false;
     public boolean onLadder = false;
     private Array<Rectangle> objects = new Array<>();
-    private Array<gameObject> overlappedObjects;
-    private Array<gameObject> tempObjects;
+    private Array<gameObject> overlappedObjects = new Array<>();
+    ;
+    private Array<gameObject> tempObjects = new Array<>();
     Rectangle spawn_location;
 
     public Player(Game parent) {
         this.parent = parent;
         p_left = parent.manager.get("p_left.png", Texture.class);
         p_right = parent.manager.get("p_right.png", Texture.class);
-        overlappedObjects = new Array<>();
-        tempObjects = new Array<>();
         sprite = new Sprite(p_right);
         sprite.setX(parent.WIDTH / 2f);
         sprite.setY(parent.HEIGHT / 2f);
-        y_velocity = 0;
-
         spawn();
 
     }
