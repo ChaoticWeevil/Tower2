@@ -14,10 +14,11 @@ import com.tower.gameObjects.gameObject;
 public class Player {
     // Physics values
     final float MAX_X_VELOCITY = 6.5f;
-    final float MAX_Y_VELOCITY = 8f;
-    final float ACCELERATION = 0.5f;
-    final float DAMPING = 0.25f;
-    final float AIR_DAMPING = 0.2f;
+    final float MAX_Y_VELOCITY = 14f;
+    final float MAX_LADDER_VELOCITY = 8f;
+    final float ACCELERATION = 0.7f;
+    final float DAMPING = 0.45f;
+    final float AIR_DAMPING = 0.3f;
     final float GRAVITY = -0.2f;
     public final float JUMP_SPEED = 7.8f;
 
@@ -140,7 +141,8 @@ public class Player {
 
 
         x_velocity = MathUtils.clamp(x_velocity, -MAX_X_VELOCITY, MAX_X_VELOCITY);
-        y_velocity = MathUtils.clamp(y_velocity, -MAX_Y_VELOCITY, MAX_Y_VELOCITY);
+        if (onLadder) y_velocity = MathUtils.clamp(y_velocity, -MAX_LADDER_VELOCITY, MAX_LADDER_VELOCITY);
+        else y_velocity = MathUtils.clamp(y_velocity, -MAX_Y_VELOCITY, MAX_Y_VELOCITY);
 
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
