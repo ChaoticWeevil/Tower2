@@ -147,6 +147,8 @@ public class Game implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
+            Timer.instance().stop();
+            player.left = player.right = player.jump = false;
             parent.change_screen(parent.menu);
             Gdx.input.setInputProcessor(parent.menu.play_stage);
         }
@@ -214,6 +216,7 @@ public class Game implements Screen, InputProcessor {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
+        Timer.instance().start();
     }
 
     @Override
