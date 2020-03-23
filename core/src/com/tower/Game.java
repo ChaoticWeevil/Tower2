@@ -202,6 +202,7 @@ public class Game implements Screen, InputProcessor {
             map = manager.get(level_set[level_number], TiledMap.class);
             renderer.setMap(map);
             player.spawn();
+            parent.change_screen(new fakeLoadingScreen(this));
         }
     }
 

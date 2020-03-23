@@ -35,7 +35,6 @@ public class Player {
     public boolean onLadder = false;
     private Array<Rectangle> objects = new Array<>();
     private Array<gameObject> overlappedObjects = new Array<>();
-    ;
     private Array<gameObject> tempObjects = new Array<>();
     Rectangle spawn_location;
 
