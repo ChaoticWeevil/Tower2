@@ -8,23 +8,23 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 
 public class fakeLoadingScreen implements Screen {
-    Stage stage = new Stage();
-    Game parent;
-    BitmapFont font = new BitmapFont();
-    Skin skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"));
-    SpriteBatch batch = new SpriteBatch();
-    String loadingDots = ".";
-    float loadingTime = 0;
+    private Stage stage = new Stage();
+    private Game parent;
+    private BitmapFont font = new BitmapFont();
+    private Skin skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"));
+    private SpriteBatch batch = new SpriteBatch();
+    private String loadingDots = ".";
+    private float loadingTime = 0;
 
-    public fakeLoadingScreen(final Game parent) {
+    fakeLoadingScreen(final Game parent) {
         this.parent = parent;
+        stage.setViewport(parent.viewport);
         font.setColor(Color.WHITE);
         font.getData().setScale(2);
         final TextButton btnContinue = new TextButton("Next Level", skin);
