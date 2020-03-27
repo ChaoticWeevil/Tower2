@@ -158,7 +158,7 @@ public class Game implements Screen, InputProcessor {
         if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
             player.right = true;
         }
-        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP) {
+        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
             player.jump = true;
         }
         return false;
@@ -172,7 +172,7 @@ public class Game implements Screen, InputProcessor {
         if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
             player.right = false;
         }
-        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP) {
+        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
             player.jump = false;
         }
         return false;
