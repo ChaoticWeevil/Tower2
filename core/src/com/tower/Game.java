@@ -24,6 +24,10 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class Game implements Screen, InputProcessor {
     TiledMap map;
@@ -48,6 +52,7 @@ public class Game implements Screen, InputProcessor {
 
     String[] level_set;
     String[] gameObjects = {"Ladder", "Death", "Exit"};
+    ArrayList<String> loadingMessages = new ArrayList();
 
     final int WIDTH = 1366;
     final int HEIGHT = 768;
@@ -93,6 +98,13 @@ public class Game implements Screen, InputProcessor {
         MAP_HEIGHT = map.getProperties().get("height", Integer.class) * 70;
         MAP_WIDTH = map.getProperties().get("width", Integer.class) * 70;
         player = new Player(this);
+
+        // Initialise loading screen messages
+        Scanner s = new Scanner(Gdx.files.internal("loadingMessages.txt").read());
+        while (s.hasNextLine()){
+            loadingMessages.add(s.nextLine());
+        }
+        s.close();
 
         Timer.schedule(new Timer.Task() {
                            @Override
