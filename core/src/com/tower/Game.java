@@ -1,5 +1,4 @@
 package com.tower;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -19,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
@@ -30,7 +30,7 @@ import java.util.Scanner;
 
 
 public class Game implements Screen, InputProcessor {
-    TiledMap map;
+    public TiledMap map;
     AssetManager manager;
     OrthographicCamera camera;
     OrthogonalTiledMapRenderer renderer;
@@ -51,13 +51,15 @@ public class Game implements Screen, InputProcessor {
     Boolean test = false;
 
     String[] level_set;
-    String[] gameObjects = {"Ladder", "Death", "Exit"};
-    ArrayList<String> loadingMessages = new ArrayList();
+    String[] gameObjects = {"Ladder", "Death", "Exit", "Collectable"};
+    ArrayList<String> loadingMessages = new ArrayList<>();
 
     final int WIDTH = 1366;
     final int HEIGHT = 768;
     int MAP_HEIGHT;
     int MAP_WIDTH;
+    public int collectablesFound = 0;
+
     public int level_number = 0;
 
     public Game(Main parent, String[] level_set) {
@@ -71,7 +73,7 @@ public class Game implements Screen, InputProcessor {
             level_set[i] = "maps/" + level_set[i];
             manager.load(level_set[i], TiledMap.class);
         }
-        String[] art = {"heart.png", "half_heart.png", "up.png", "left.png", "right.png", "p_right.png", "p_left.png"};
+        String[] art = {"heart.png", "half_heart.png", "up.png", "left.png", "right.png", "p_right.png", "p_left.png", "carPart.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
@@ -123,7 +125,7 @@ public class Game implements Screen, InputProcessor {
         camera.update();
     }
 
-    @Override // Runs automatically whenever libgdx decides
+    @Override // Runs automatically whenever libGDX decides
     public void render(float delta) {
         Gdx.graphics.setTitle("Tower | FPS: " + Gdx.graphics.getFramesPerSecond());
         batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -143,6 +145,7 @@ public class Game implements Screen, InputProcessor {
                         + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
                         + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
                         + "\nTest: " + player.onLadder
+                        + "\nCollectables: " + collectablesFound
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
@@ -215,9 +218,9 @@ public class Game implements Screen, InputProcessor {
             renderer.setMap(map);
             player.spawn();
             parent.change_screen(new fakeLoadingScreen(this));
+
         }
     }
-
 
     // Unused Methods
     @Override

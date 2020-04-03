@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.tower.gameObjects.Death;
-import com.tower.gameObjects.Exit;
-import com.tower.gameObjects.Ladder;
-import com.tower.gameObjects.gameObject;
+import com.tower.gameObjects.*;
 
 public class Player {
     // Physics values
@@ -73,6 +70,9 @@ public class Player {
                         break;
                     case "Exit":
                         tempObjects.add(new Exit(parent));
+                        break;
+                    case "Collectable":
+                        tempObjects.add(new Collectable(parent, (int)r.x, (int)r.y));
                         break;
                 }
             }
