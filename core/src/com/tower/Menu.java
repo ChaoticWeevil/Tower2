@@ -125,6 +125,10 @@ public class Menu implements Screen {
         new_game.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    parent.game.dispose();
+
+                } catch (NullPointerException ignored) {}
                 parent.game = new Game(parent, parent.level_set_1);
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);

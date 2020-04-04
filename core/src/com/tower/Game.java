@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
@@ -136,6 +137,7 @@ public class Game implements Screen, InputProcessor {
         renderer.render();
         batch.begin();
         player.render(batch);
+        renderHud(batch);
         if (debug_mode) renderDebug(batch);
         batch.end();
     }
@@ -154,6 +156,10 @@ public class Game implements Screen, InputProcessor {
         debugRenderer.rect(player.sprite.getX(), player.sprite.getY(), player.sprite.getWidth(), player.sprite.getHeight());
         debugRenderer.end();
         batch.begin();
+    }
+
+    public void renderHud(SpriteBatch batch) {
+        font.draw(batch, "Score: " + player.score, WIDTH /2f - 40, HEIGHT - 10);
     }
 
     @Override
