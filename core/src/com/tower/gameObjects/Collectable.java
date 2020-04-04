@@ -16,7 +16,8 @@ public class Collectable extends gameObject {
 
     @Override
     public void onEnter() {
-        parent.collectablesFound += 1;
+        parent.player.collectablesFound += 1;
+        parent.player.score += 100;
         x /= 70;
         y /= 70;
         ((TiledMapTileLayer)parent.map.getLayers().get("Things")).getCell(x, y).setTile(null);

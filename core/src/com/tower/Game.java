@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -58,7 +59,7 @@ public class Game implements Screen, InputProcessor {
     final int HEIGHT = 768;
     int MAP_HEIGHT;
     int MAP_WIDTH;
-    public int collectablesFound = 0;
+
 
     public int level_number = 0;
 
@@ -145,7 +146,8 @@ public class Game implements Screen, InputProcessor {
                         + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
                         + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
                         + "\nTest: " + player.onLadder
-                        + "\nCollectables: " + collectablesFound
+                        + "\nCollectables: " + player.collectablesFound
+                        + "\nScore: " + player.score
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
@@ -213,6 +215,7 @@ public class Game implements Screen, InputProcessor {
 
     public void nextLevel() {
         level_number++;
+        player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);;
         if (level_number < level_set.length) {
             map = manager.get(level_set[level_number], TiledMap.class);
             renderer.setMap(map);

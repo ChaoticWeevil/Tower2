@@ -34,6 +34,9 @@ public class Player {
     private Array<gameObject> overlappedObjects = new Array<>();
     private Array<gameObject> tempObjects = new Array<>();
     Rectangle spawn_location;
+    public int collectablesFound = 0;
+    public int score = 0;
+    public int currentLevelDeaths = 0;
 
     public Player(Game parent) {
         this.parent = parent;
@@ -169,6 +172,7 @@ public class Player {
     }
 
     public void respawn() {
+        currentLevelDeaths ++;
         parent.camera.position.x = spawn_location.x;
         parent.camera.position.y = spawn_location.y;
         x_velocity = y_velocity = 0;
