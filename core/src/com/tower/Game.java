@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -48,6 +49,7 @@ public class Game implements Screen, InputProcessor {
             return new Rectangle();
         }
     };
+    public Stage stage = new Stage();
 
     Boolean debug_mode;
     Boolean test = false;
@@ -56,8 +58,8 @@ public class Game implements Screen, InputProcessor {
     String[] gameObjects = {"Ladder", "Death", "Exit", "Collectable"};
     ArrayList<String> loadingMessages = new ArrayList<>();
 
-    final int WIDTH = 1366;
-    final int HEIGHT = 768;
+    public final int WIDTH = 1366;
+    public final int HEIGHT = 768;
     int MAP_HEIGHT;
     int MAP_WIDTH;
 
@@ -96,6 +98,7 @@ public class Game implements Screen, InputProcessor {
         viewport.apply();
         viewport.getCamera().position.x = WIDTH / 2f;
         viewport.getCamera().position.y = HEIGHT / 2f;
+        stage.setViewport(viewport);
 
         debug_mode = false;
 
@@ -160,6 +163,10 @@ public class Game implements Screen, InputProcessor {
 
     public void renderHud(SpriteBatch batch) {
         font.draw(batch, "Score: " + player.score, WIDTH /2f - 40, HEIGHT - 10);
+        batch.end();
+        stage.act();
+        stage.draw();
+        batch.begin();
     }
 
     @Override
