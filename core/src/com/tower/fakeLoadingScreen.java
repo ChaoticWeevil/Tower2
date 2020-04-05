@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -35,6 +36,11 @@ public class fakeLoadingScreen implements Screen {
 
         Random rand = new Random();
         loadingMessage = parent.loadingMessages.get(rand.nextInt(parent.loadingMessages.size()));
+
+        Label lbl = new Label(loadingMessage, skin);
+        lbl.setPosition(5, parent.HEIGHT-20);
+        lbl.setVisible(true);
+        stage.addActor(lbl);
 
         final TextButton btnContinue = new TextButton("Next Level", skin);
         btnContinue.setSize(parent.WIDTH / 5f, parent.HEIGHT / 8f);
@@ -86,7 +92,6 @@ public class fakeLoadingScreen implements Screen {
         stage.draw();
         batch.begin();
         font.draw(batch, "Loading" + loadingDots, 10, 50);
-        fontSmall.draw(batch, loadingMessage, 5, parent.HEIGHT - 5);
         batch.end();
     }
 
