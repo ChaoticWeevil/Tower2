@@ -77,7 +77,8 @@ public class Game implements Screen, InputProcessor {
             level_set[i] = "maps/" + level_set[i];
             manager.load(level_set[i], TiledMap.class);
         }
-        String[] art = {"heart.png", "half_heart.png", "up.png", "left.png", "right.png", "p_right.png", "p_left.png", "carPart.png"};
+        String[] art = {"heart.png", "half_heart.png", "up.png", "left.png", "right.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png",
+                "Trees/Tree5.png", "Trees/Tree6.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
@@ -228,7 +229,7 @@ public class Game implements Screen, InputProcessor {
 
     public void nextLevel() {
         level_number++;
-        player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);;
+        player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);
         if (level_number < level_set.length) {
             map = manager.get(level_set[level_number], TiledMap.class);
             renderer.setMap(map);

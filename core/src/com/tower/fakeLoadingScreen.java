@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,8 +27,17 @@ public class fakeLoadingScreen implements Screen {
     private String loadingDots = ".";
     private float loadingTime = 0;
     private String loadingMessage;
+    private Texture t;
 
     fakeLoadingScreen(final Game parent) {
+        final int maxScore = 900;
+        if (parent.player.score >= maxScore) t = parent.manager.get("Trees/Tree6.png", Texture.class);
+        else if (parent.player.score >= 700) t = parent.manager.get("Trees/Tree5.png", Texture.class);
+        else if (parent.player.score >= 500) t = parent.manager.get("Trees/Tree4.png", Texture.class);
+        else if (parent.player.score >= 300) t = parent.manager.get("Trees/Tree3.png", Texture.class);
+        else if (parent.player.score >= 200) t = parent.manager.get("Trees/Tree2.png", Texture.class);
+        else                                 t = parent.manager.get("Trees/Tree1.png", Texture.class);
+
         this.parent = parent;
         stage.setViewport(parent.viewport);
         font.setColor(Color.WHITE);
@@ -77,7 +87,6 @@ public class fakeLoadingScreen implements Screen {
         );
     }
 
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -91,7 +100,9 @@ public class fakeLoadingScreen implements Screen {
         stage.act();
         stage.draw();
         batch.begin();
+        batch.draw(t, parent.WIDTH/2f - 50, parent.HEIGHT/2f-100);
         font.draw(batch, "Loading" + loadingDots, 10, 50);
+        font.draw(batch, "Score: " + parent.player.score, parent.WIDTH /2f - 40, parent.HEIGHT - 10);
         batch.end();
     }
 

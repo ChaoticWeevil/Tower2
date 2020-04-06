@@ -12,7 +12,7 @@ public class Player {
     // Physics values
     final float MAX_X_VELOCITY = 6.5f;
     final float MAX_Y_VELOCITY = 14f;
-    final float MAX_LADDER_VELOCITY = 8f;
+    final float MAX_LADDER_VELOCITY = 5f;
     final float ACCELERATION = 0.7f;
     final float DAMPING = 0.45f;
     final float AIR_DAMPING = 0.3f;
