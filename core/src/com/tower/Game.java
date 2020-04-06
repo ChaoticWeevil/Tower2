@@ -21,7 +21,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
@@ -60,13 +64,14 @@ public class Game implements Screen, InputProcessor {
 
     public final int WIDTH = 1366;
     public final int HEIGHT = 768;
+    public final int MAX_SCORE = 900;
     int MAP_HEIGHT;
     int MAP_WIDTH;
 
 
     public int level_number = 0;
 
-    public Game(Main parent, String[] level_set) {
+    public Game(final Main parent, String[] level_set) {
         this.parent = parent;
         this.level_set = level_set;
         // Asset loading
@@ -123,6 +128,29 @@ public class Game implements Screen, InputProcessor {
                 , 0.1f
                 , 0.01f
         );
+
+        // Tutorial Popup Window
+        final Dialog d = new Dialog("Tutorial", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))){
+            public void result(Object obj) {
+                stage.clear();
+                Gdx.input.setInputProcessor(parent.game);
+
+            }
+        };
+        Label text = new Label("Welcome to a prototype version of The Tower 2. \nTo move the player either use the left and right arrow keys or A and D.\nYou can jump and climb ladders with the spacebar or the up arrow.\nAs you progress" +
+                " through the game your tree will grow larger\n based on how well you do in the game and how sustainable your actions are.\nMake sure to keep your eye out for special collectables.\nWhen you are ready press" +
+                " the button below to start.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+        d.getContentTable().align(Align.center);
+        d.align(Align.topLeft);
+        text.setAlignment(Align.center);
+        d.text(text);
+        d.button("Begin");
+        d.setY(550);
+        d.setX(450);
+        d.setWidth(466);
+        d.setHeight(168);
+        stage.addActor(d);
+        Gdx.input.setInputProcessor(stage);
     }
 
     // Runs 100 times per second
@@ -163,7 +191,7 @@ public class Game implements Screen, InputProcessor {
     }
 
     public void renderHud(SpriteBatch batch) {
-        font.draw(batch, "Score: " + player.score, WIDTH /2f - 40, HEIGHT - 10);
+        font.draw(batch, "Tree Growth: " + (int)((float)player.score / MAX_SCORE * 100) + "%", WIDTH /2f - 40, HEIGHT - 10);
         batch.end();
         stage.act();
         stage.draw();
@@ -248,8 +276,7 @@ public class Game implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(this);
-        Timer.instance().start();
+      Timer.instance().start();
     }
 
     @Override

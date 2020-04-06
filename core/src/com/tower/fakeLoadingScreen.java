@@ -68,7 +68,9 @@ public class fakeLoadingScreen implements Screen {
                         , 0.1f
                         , 0.01f
                 );
+                Gdx.input.setInputProcessor(parent);
                 parent.parent.change_screen(parent.parent.game);
+
             }
         });
         btnContinue.setVisible(false);
@@ -102,7 +104,7 @@ public class fakeLoadingScreen implements Screen {
         batch.begin();
         batch.draw(t, parent.WIDTH/2f - 50, parent.HEIGHT/2f-100);
         font.draw(batch, "Loading" + loadingDots, 10, 50);
-        font.draw(batch, "Score: " + parent.player.score, parent.WIDTH /2f - 40, parent.HEIGHT - 10);
+        font.draw(batch, "Tree Growth: " + (int)((float)parent.player.score / parent.MAX_SCORE * 100) + "%", parent.WIDTH /2f - 40, parent.HEIGHT - 10);
         batch.end();
     }
 

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import sun.security.util.Debug;
 
 public class Menu implements Screen {
     FitViewport viewport;
@@ -118,8 +119,9 @@ public class Menu implements Screen {
         continue_game.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                Gdx.input.setInputProcessor(parent.game);
                 parent.change_screen(parent.game);
-//                Gdx.input.setInputProcessor(null);
+                Gdx.input.setInputProcessor(parent.game);
             }
         });
         new_game.addListener(new ChangeListener() {
@@ -129,10 +131,11 @@ public class Menu implements Screen {
                     parent.game.dispose();
 
                 } catch (NullPointerException ignored) {}
+                System.out.println("1");
                 parent.game = new Game(parent, parent.level_set_1);
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);
-                Gdx.input.setInputProcessor(parent.game);
+
             }
         });
         back2.addListener(new ChangeListener() {
