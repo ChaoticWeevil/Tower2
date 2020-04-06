@@ -34,7 +34,9 @@ public class Player {
     private Array<gameObject> overlappedObjects = new Array<>();
     private Array<gameObject> tempObjects = new Array<>();
     Rectangle spawn_location;
-    public int collectablesFound = 0;
+
+    public int fertilizerFound = 0;
+    public int carPartsFound = 0;
     public int score = 0;
     public int currentLevelDeaths = 0;
 
@@ -74,8 +76,11 @@ public class Player {
                     case "Exit":
                         tempObjects.add(new Exit(parent));
                         break;
-                    case "Collectable":
-                        tempObjects.add(new Collectable(parent, (int)r.x, (int)r.y));
+                    case "CarPart":
+                        tempObjects.add(new Collectable(parent, (int)r.x, (int)r.y, 1));
+                        break;
+                    case "Fertilizer":
+                        tempObjects.add(new Collectable(parent, (int)r.x, (int)r.y, 2));
                         break;
                 }
             }

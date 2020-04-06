@@ -59,7 +59,7 @@ public class Game implements Screen, InputProcessor {
     Boolean test = false;
 
     String[] level_set;
-    String[] gameObjects = {"Ladder", "Death", "Exit", "Collectable"};
+    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart"};
     ArrayList<String> loadingMessages = new ArrayList<>();
 
     public final int WIDTH = 1366;
@@ -179,8 +179,8 @@ public class Game implements Screen, InputProcessor {
         font.draw(batch, "Camera: " + camera.position.x + ", " + camera.position.y
                         + "\nPlayer: " + player.sprite.getX() + ", " + player.sprite.getY()
                         + "\nVelocity: " + player.x_velocity + ", " + player.y_velocity
-                        + "\nTest: " + player.onLadder
-                        + "\nCollectables: " + player.collectablesFound
+                        + "\nFertilizer: " + player.fertilizerFound
+                        + "\nCar Parts: " + player.carPartsFound
                         + "\nScore: " + player.score
                 , 5, HEIGHT - 2);
         batch.end();
