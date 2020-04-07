@@ -86,7 +86,7 @@ public class Game implements Screen, InputProcessor {
             manager.load(level_set[i], TiledMap.class);
         }
         String[] art = {"heart.png", "half_heart.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
-                "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png"};
+                "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png", "eKey.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
@@ -232,15 +232,21 @@ public class Game implements Screen, InputProcessor {
             parent.change_screen(parent.menu);
             Gdx.input.setInputProcessor(parent.menu.play_stage);
         }
-        if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
+        else if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
             player.left = true;
         }
-        if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
+        else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
             player.right = true;
         }
-        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
+        else if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
             player.jump = true;
         }
+        else if (keycode == Input.Keys.E) {
+            for (gameObject o : player.overlappedObjects) {
+                o.onActivate();
+            }
+        }
+
         return false;
     }
 

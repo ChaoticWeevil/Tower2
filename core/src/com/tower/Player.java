@@ -31,7 +31,7 @@ public class Player {
     boolean grounded = false;
     public boolean onLadder = false;
     private Array<Rectangle> objects = new Array<>();
-    private Array<gameObject> overlappedObjects = new Array<>();
+    Array<gameObject> overlappedObjects = new Array<>();
     private Array<gameObject> tempObjects = new Array<>();
     Rectangle spawn_location;
 
@@ -53,6 +53,9 @@ public class Player {
 
     public void render(Batch batch) {
         sprite.draw(batch);
+        for (gameObject o : overlappedObjects) {
+            if (o.hasActivateMethod) batch.draw(parent.manager.get("eKey.png", Texture.class), sprite.getX() + (sprite.getWidth()/2f - 17), sprite.getY() + sprite.getHeight() + 10);
+        }
     }
 
     public boolean notContainsObject(Array<gameObject> array, gameObject a) {

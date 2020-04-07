@@ -20,10 +20,11 @@ public class Switch extends gameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+        hasActivateMethod = true;
     }
 
     @Override
-    public void onEnter() {
+    public void onActivate() {
         MapLayer layer = parent.map.getLayers().get("Collision_Layer");
         MapObjects objects = layer.getObjects();
         for (MapObject object : objects) {
