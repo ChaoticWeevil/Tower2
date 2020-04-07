@@ -1,4 +1,5 @@
 package com.tower;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -19,34 +20,34 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.tower.gameObjects.Gate;
+import com.tower.gameObjects.gameObject;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
 public class Game implements Screen, InputProcessor {
     public TiledMap map;
-    AssetManager manager;
-    OrthographicCamera camera;
+    public AssetManager manager = new AssetManager();
+    OrthographicCamera camera = new OrthographicCamera();
     OrthogonalTiledMapRenderer renderer;
-    SpriteBatch batch;
+    SpriteBatch batch = new SpriteBatch();
     public Player player;
-    BitmapFont font;
+    BitmapFont font = new BitmapFont();
     Main parent;
     StretchViewport viewport;
-    ShapeRenderer debugRenderer;
+    ShapeRenderer debugRenderer = new ShapeRenderer();
     Pool<Rectangle> rectPool = new Pool<Rectangle>() {
         @Override
         protected Rectangle newObject() {
@@ -59,8 +60,11 @@ public class Game implements Screen, InputProcessor {
     Boolean test = false;
 
     String[] level_set;
-    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart"};
+    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
+    String[] activeGameObjects = {"Gate"};
     ArrayList<String> loadingMessages = new ArrayList<>();
+    Array<gameObject> activeObjects = new Array<>();
+    public HashMap<Integer, Integer> signals = new HashMap<>();
 
     public final int WIDTH = 1366;
     public final int HEIGHT = 768;
@@ -75,15 +79,14 @@ public class Game implements Screen, InputProcessor {
         this.parent = parent;
         this.level_set = level_set;
         // Asset loading
-        manager = new AssetManager();
         manager.setLoader(TiledMap.class, new TmxMapLoader());
 
         for (int i = 0; i < level_set.length; i++) {
             level_set[i] = "maps/" + level_set[i];
             manager.load(level_set[i], TiledMap.class);
         }
-        String[] art = {"heart.png", "half_heart.png", "up.png", "left.png", "right.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png",
-                "Trees/Tree5.png", "Trees/Tree6.png"};
+        String[] art = {"heart.png", "half_heart.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
+                "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
@@ -91,14 +94,10 @@ public class Game implements Screen, InputProcessor {
 
         map = manager.get(level_set[level_number], TiledMap.class);
         renderer = new OrthogonalTiledMapRenderer(map);
-        batch = new SpriteBatch();
 
-        debugRenderer = new ShapeRenderer();
         debugRenderer.setAutoShapeType(true);
-        camera = new OrthographicCamera();
         camera.setToOrtho(false, WIDTH, HEIGHT);
         camera.update();
-        font = new BitmapFont();
         viewport = new StretchViewport(WIDTH, HEIGHT,// camera);
                 new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         viewport.apply();
@@ -114,11 +113,30 @@ public class Game implements Screen, InputProcessor {
 
         // Initialise loading screen messages
         Scanner s = new Scanner(Gdx.files.internal("loadingMessages.txt").read());
-        while (s.hasNextLine()){
+        while (s.hasNextLine()) {
             loadingMessages.add(s.nextLine());
         }
         s.close();
 
+        // Add active map objects to array
+        MapObjects objects = map.getLayers().get("Collision_Layer").getObjects();
+        for (MapObject object : objects) {
+            try {
+                if ((Boolean) object.getProperties().get("Active")) {
+                    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                    for (String check : activeGameObjects) {
+                        if ("Gate".equals(check)) {
+                            activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
+                        }
+                    }
+                }
+            } catch (NullPointerException ignored) {
+            }
+
+        }
+
+
+        // Starts the game by running update method
         Timer.schedule(new Timer.Task() {
                            @Override
                            public void run() {
@@ -130,7 +148,7 @@ public class Game implements Screen, InputProcessor {
         );
 
         // Tutorial Popup Window
-        final Dialog d = new Dialog("Tutorial", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))){
+        final Dialog d = new Dialog("Tutorial", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))) {
             public void result(Object obj) {
                 stage.clear();
                 Gdx.input.setInputProcessor(parent.game);
@@ -157,6 +175,8 @@ public class Game implements Screen, InputProcessor {
     public void update() {
         player.update();
         camera.update();
+        for (gameObject o : activeObjects) o.update();
+
     }
 
     @Override // Runs automatically whenever libGDX decides
@@ -182,6 +202,7 @@ public class Game implements Screen, InputProcessor {
                         + "\nFertilizer: " + player.fertilizerFound
                         + "\nCar Parts: " + player.carPartsFound
                         + "\nScore: " + player.score
+                        + "\nSignals: " + signals
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
@@ -191,7 +212,7 @@ public class Game implements Screen, InputProcessor {
     }
 
     public void renderHud(SpriteBatch batch) {
-        font.draw(batch, "Tree Growth: " + (int)((float)player.score / MAX_SCORE * 100) + "%", WIDTH /2f - 40, HEIGHT - 10);
+        font.draw(batch, "Tree Growth: " + (int) ((float) player.score / MAX_SCORE * 100) + "%", WIDTH / 2f - 40, HEIGHT - 10);
         batch.end();
         stage.act();
         stage.draw();
@@ -258,10 +279,28 @@ public class Game implements Screen, InputProcessor {
     public void nextLevel() {
         level_number++;
         player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);
+        activeObjects.clear();
         if (level_number < level_set.length) {
             map = manager.get(level_set[level_number], TiledMap.class);
             renderer.setMap(map);
             player.spawn();
+
+            // Add active map objects to array
+            MapObjects objects = map.getLayers().get("Collision_Layer").getObjects();
+            for (MapObject object : objects) {
+                try {
+                    if ((Boolean) object.getProperties().get("Active")) {
+                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                        for (String check : activeGameObjects) {
+                            if ("Gate".equals(check)) {
+                                activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
+                            }
+                        }
+                    }
+                } catch (NullPointerException ignored) {
+                }
+            }
+
             parent.change_screen(new fakeLoadingScreen(this));
 
         }
@@ -276,7 +315,7 @@ public class Game implements Screen, InputProcessor {
 
     @Override
     public void show() {
-      Timer.instance().start();
+        Timer.instance().start();
     }
 
     @Override

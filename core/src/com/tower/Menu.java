@@ -131,7 +131,6 @@ public class Menu implements Screen {
                     parent.game.dispose();
 
                 } catch (NullPointerException ignored) {}
-                System.out.println("1");
                 parent.game = new Game(parent, parent.level_set_1);
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);

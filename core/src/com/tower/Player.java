@@ -55,6 +55,17 @@ public class Player {
         sprite.draw(batch);
     }
 
+    public boolean notContainsObject(Array<gameObject> array, gameObject a) {
+        boolean contains = false;
+        for (gameObject b : array) {
+            if ((a.x == b.x) && (a.y == b.y) && (a.width == b.width) && (a.height == b.height)) {
+                contains = true;
+                break;
+            }
+        }
+        return !contains;
+    }
+
     public void update() {
         // Manage gameObjects
         Rectangle rect = parent.rectPool.obtain();
@@ -71,34 +82,38 @@ public class Player {
                         tempObjects.add(new Ladder(parent, r.x, r.y, r.width, r.height));
                         break;
                     case "Death":
-                        tempObjects.add(new Death(parent));
+                        tempObjects.add(new Death(parent, r.x, r.y, r.width, r.height));
                         break;
                     case "Exit":
-                        tempObjects.add(new Exit(parent));
+                        tempObjects.add(new Exit(parent, r.x, r.y, r.width, r.height));
                         break;
                     case "CarPart":
-                        tempObjects.add(new Collectable(parent, (int)r.x, (int)r.y, 1));
+                        tempObjects.add(new Collectable(parent, r.x, r.y, r.width, r.height, 1));
                         break;
                     case "Fertilizer":
-                        tempObjects.add(new Collectable(parent, (int)r.x, (int)r.y, 2));
+                        tempObjects.add(new Collectable(parent, r.x, r.y, r.width, r.height, 2));
+                        break;
+                    case "Switch":
+                        tempObjects.add(new Switch(parent, r.x, r.y, r.width, r.height));
                         break;
                 }
             }
         }
-        for (gameObject o : overlappedObjects) {
-            if (!tempObjects.contains(o, false)) {
-                o.onExit();
-                overlappedObjects.removeValue(o, false);
+        for (gameObject overlappedObject : overlappedObjects) {
+            if (notContainsObject(tempObjects, overlappedObject)) {
+                overlappedObject.onExit();
+                overlappedObjects.removeValue(overlappedObject, false);
             }
+
         }
         for (gameObject o : tempObjects) {
-            if (!overlappedObjects.contains(o, false)) {
+            if(notContainsObject(overlappedObjects, o)) {
                 overlappedObjects.add(o);
                 o.onEnter();
             }
         }
         for (gameObject o : overlappedObjects) {
-            o.update();
+            o.overlappedUpdate();
         }
 
 
@@ -177,7 +192,7 @@ public class Player {
     }
 
     public void respawn() {
-        currentLevelDeaths ++;
+        currentLevelDeaths++;
         parent.camera.position.x = spawn_location.x;
         parent.camera.position.y = spawn_location.y;
         x_velocity = y_velocity = 0;

@@ -325,7 +325,7 @@
     <property name="platform" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="183" x="3217.08" y="1819.82" width="141" height="21">
+  <object id="183" x="3217.08" y="1819.82" width="141.783" height="21">
    <properties>
     <property name="platform" type="bool" value="true"/>
    </properties>
@@ -388,7 +388,7 @@
     <property name="platform" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="201" x="2786.5" y="1814.5" width="211" height="31">
+  <object id="201" x="2728" y="1818" width="211" height="31">
    <properties>
     <property name="platform" type="bool" value="true"/>
    </properties>

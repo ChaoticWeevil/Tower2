@@ -10,17 +10,17 @@ import com.tower.Game;
 
 public class Collectable extends gameObject {
     Game parent;
-    int x;
-    int y;
     final int carPart = 1;
     final int fertilizer = 2;
     int type;
 
 
-    public Collectable(Game parent, int x, int y, int type) {
+    public Collectable(Game parent, float x, float y, float width, float height, int type) {
         this.parent = parent;
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.type = type;
     }
 
@@ -65,7 +65,7 @@ public class Collectable extends gameObject {
 
         x /= 70;
         y /= 70;
-        ((TiledMapTileLayer) parent.map.getLayers().get("Things")).getCell(x, y).setTile(null);
+        ((TiledMapTileLayer) parent.map.getLayers().get("Things")).getCell((int)x, (int)y).setTile(null);
         if (type == carPart) parent.map.getLayers().get("Collision_Layer").getObjects().remove(parent.map.getLayers().get("Collision_Layer").getObjects().get("CarPart"));
         else parent.map.getLayers().get("Collision_Layer").getObjects().remove(parent.map.getLayers().get("Collision_Layer").getObjects().get("Fertilizer"));
     }
