@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="75" height="25" tilewidth="70" tileheight="70" infinite="0" nextlayerid="13" nextobjectid="199">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="75" height="25" tilewidth="70" tileheight="70" infinite="0" nextlayerid="13" nextobjectid="202">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="157" name="tiles" tilewidth="70" tileheight="70" tilecount="5" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
@@ -68,9 +68,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,158,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,160,0,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,132,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,132,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,158,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,156,0,0,0,0,144,0,132,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,103,103,103,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,44,44,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -258,9 +258,12 @@
     <property name="Fertilizer" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="193" x="1120" y="1400" width="70" height="70">
+  <object id="193" x="770" y="1400" width="70" height="70">
    <properties>
+    <property name="HasCustomTexture" type="bool" value="true"/>
     <property name="ID" type="int" value="1"/>
+    <property name="OffTexture" value="switchLeft.png"/>
+    <property name="OnTexture" value="switchRight.png"/>
     <property name="Switch" type="bool" value="true"/>
    </properties>
   </object>
@@ -268,9 +271,27 @@
    <properties>
     <property name="Active" type="bool" value="true"/>
     <property name="Gate" type="bool" value="true"/>
-    <property name="ID" type="int" value="1"/>
+    <property name="ID" type="int" value="3"/>
     <property name="Texture" value="ers.png"/>
     <property name="platform" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="199" name="And Gate" x="1050" y="1190" width="70" height="70">
+   <properties>
+    <property name="Active" type="bool" value="true"/>
+    <property name="AndGate" type="bool" value="true"/>
+    <property name="InputID1" type="int" value="1"/>
+    <property name="InputID2" type="int" value="2"/>
+    <property name="OutputID" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="201" x="1120" y="1400" width="70" height="70">
+   <properties>
+    <property name="HasCustomTexture" type="bool" value="true"/>
+    <property name="ID" type="int" value="2"/>
+    <property name="OffTexture" value="switchLeft.png"/>
+    <property name="OnTexture" value="switchRight.png"/>
+    <property name="Switch" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

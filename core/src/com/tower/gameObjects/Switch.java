@@ -36,20 +36,19 @@ public class Switch extends gameObject {
                     value = parent.signals.get(object.getProperties().get("ID"));
                     if (value == 1) {
                         value = 0;
-                        t = parent.manager.get("switchLeft.png", Texture.class);
+                        t = parent.manager.get(object.getProperties().get("OffTexture", String.class), Texture.class);
                     }
                     else {
                         value = 1;
-                        t = parent.manager.get("switchRight.png", Texture.class);
+                        t = parent.manager.get(object.getProperties().get("OnTexture", String.class), Texture.class);
                     }
                 } catch (Exception ignored) {
                     value = 1;
-                    t = parent.manager.get("switchRight.png", Texture.class);
+                    t = parent.manager.get(object.getProperties().get("OnTexture", String.class), Texture.class);
                 }
                 parent.signals.put((Integer) object.getProperties().get("ID"), value);
                 ((TiledMapTileLayer) parent.map.getLayers().get("Things")).getCell((int)x/70, (int)y/70).getTile()
                         .setTextureRegion(new TextureRegion(t));
-
             }
         }
     }

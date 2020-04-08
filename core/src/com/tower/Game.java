@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -29,6 +31,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.tower.gameObjects.AndGate;
 import com.tower.gameObjects.Gate;
 import com.tower.gameObjects.gameObject;
 
@@ -61,7 +64,7 @@ public class Game implements Screen, InputProcessor {
 
     String[] level_set;
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
-    String[] activeGameObjects = {"Gate"};
+    String[] activeGameObjects = {"Gate", "AndGate"};
     ArrayList<String> loadingMessages = new ArrayList<>();
     Array<gameObject> activeObjects = new Array<>();
     public HashMap<Integer, Integer> signals = new HashMap<>();
@@ -121,20 +124,26 @@ public class Game implements Screen, InputProcessor {
         // Add active map objects to array
         MapObjects objects = map.getLayers().get("Collision_Layer").getObjects();
         for (MapObject object : objects) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
             try {
                 if ((Boolean) object.getProperties().get("Active")) {
-                    Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                    for (String check : activeGameObjects) {
-                        if ("Gate".equals(check)) {
-                            activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
-                        }
+                    try {
+                        if (object.getProperties().get("Gate", Boolean.class)) activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
+                    }catch (NullPointerException ignored) {}
+                    if (object.getProperties().get("AndGate", Boolean.class)) {
+                        activeObjects.add(new AndGate(this, rect.x, rect.y, rect.width, rect.height));
                     }
                 }
             } catch (NullPointerException ignored) {
             }
-
+            try {
+                if (object.getProperties().get("HasCustomTexture", Boolean.class)) {
+                    ((TiledMapTileLayer) map.getLayers().get("Things")).getCell((int) rect.x / 70, (int) rect.y / 70).getTile()
+                            .setTextureRegion(new TextureRegion(manager.get(object.getProperties().get("OffTexture", String.class), Texture.class)));
+                }
+            } catch (NullPointerException ignored) {
+            }
         }
-
 
         // Starts the game by running update method
         Timer.schedule(new Timer.Task() {
@@ -231,17 +240,13 @@ public class Game implements Screen, InputProcessor {
             player.left = player.right = player.jump = false;
             parent.change_screen(parent.menu);
             Gdx.input.setInputProcessor(parent.menu.play_stage);
-        }
-        else if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
+        } else if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
             player.left = true;
-        }
-        else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
+        } else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
             player.right = true;
-        }
-        else if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
+        } else if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
             player.jump = true;
-        }
-        else if (keycode == Input.Keys.E) {
+        } else if (keycode == Input.Keys.E) {
             for (gameObject o : player.overlappedObjects) {
                 o.onActivate();
             }
