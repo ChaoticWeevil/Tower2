@@ -324,6 +324,30 @@ public class Game implements Screen, InputProcessor {
             parent.change_screen(new fakeLoadingScreen(this));
 
         }
+        else wonGame();
+    }
+
+    public void wonGame() {
+        final Dialog d = new Dialog("Congratulations", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))) {
+            public void result(Object obj) {
+                stage.clear();
+                System.exit(0);
+
+            }
+        };
+        Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " + (int) ((float) player.score / MAX_SCORE * 100) + "%"
+                + ".\nYou collected "  + player.carPartsFound + " car parts.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+        d.getContentTable().align(Align.center);
+        d.align(Align.topLeft);
+        text.setAlignment(Align.center);
+        d.text(text);
+        d.button("Exit Game");
+        d.setY(550);
+        d.setX(450);
+        d.setWidth(466);
+        d.setHeight(168);
+        stage.addActor(d);
+        Gdx.input.setInputProcessor(stage);
     }
 
     // Unused Methods
