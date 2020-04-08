@@ -33,6 +33,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.tower.gameObjects.AndGate;
 import com.tower.gameObjects.Gate;
+import com.tower.gameObjects.OrGate;
 import com.tower.gameObjects.gameObject;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class Game implements Screen, InputProcessor {
 
     String[] level_set;
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
-    String[] activeGameObjects = {"Gate", "AndGate"};
+    String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
     ArrayList<String> loadingMessages = new ArrayList<>();
     Array<gameObject> activeObjects = new Array<>();
     public HashMap<Integer, Integer> signals = new HashMap<>();
@@ -128,10 +129,18 @@ public class Game implements Screen, InputProcessor {
             try {
                 if ((Boolean) object.getProperties().get("Active")) {
                     try {
-                        if (object.getProperties().get("Gate", Boolean.class)) activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
-                    }catch (NullPointerException ignored) {}
-                    if (object.getProperties().get("AndGate", Boolean.class)) {
-                        activeObjects.add(new AndGate(this, rect.x, rect.y, rect.width, rect.height));
+                        if (object.getProperties().get("Gate", Boolean.class))
+                            activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
+                    } catch (NullPointerException ignored) {
+                    }
+                    try {
+                        if (object.getProperties().get("AndGate", Boolean.class)) {
+                            activeObjects.add(new AndGate(this, rect.x, rect.y, rect.width, rect.height));
+                        }
+                    } catch (NullPointerException ignored) {
+                    }
+                    if (object.getProperties().get("OrGate", Boolean.class)) {
+                        activeObjects.add(new OrGate(this, rect.x, rect.y, rect.width, rect.height));
                     }
                 }
             } catch (NullPointerException ignored) {

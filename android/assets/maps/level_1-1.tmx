@@ -276,12 +276,12 @@
     <property name="platform" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="199" name="And Gate" x="1050" y="1190" width="70" height="70">
+  <object id="199" name="Or Gate" x="1050" y="1190" width="70" height="70">
    <properties>
     <property name="Active" type="bool" value="true"/>
-    <property name="AndGate" type="bool" value="true"/>
     <property name="InputID1" type="int" value="1"/>
     <property name="InputID2" type="int" value="2"/>
+    <property name="OrGate" type="bool" value="true"/>
     <property name="OutputID" type="int" value="3"/>
    </properties>
   </object>
