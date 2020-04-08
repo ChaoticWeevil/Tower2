@@ -320,6 +320,7 @@ public class Game implements Screen, InputProcessor {
                 } catch (NullPointerException ignored) {
                 }
             }
+
             parent.change_screen(new fakeLoadingScreen(this));
         }
         else wonGame();
