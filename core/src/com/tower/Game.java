@@ -63,7 +63,7 @@ public class Game implements Screen, InputProcessor {
     Boolean debug_mode;
     Boolean test = false;
 
-    String[] level_set;
+    Array<String> level_set = new Array<>();
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
     String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
     ArrayList<String> loadingMessages = new ArrayList<>();
@@ -81,13 +81,13 @@ public class Game implements Screen, InputProcessor {
 
     public Game(final Main parent, String[] level_set) {
         this.parent = parent;
-        this.level_set = level_set;
         // Asset loading
         manager.setLoader(TiledMap.class, new TmxMapLoader());
-
         for (int i = 0; i < level_set.length; i++) {
-            level_set[i] = "maps/" + level_set[i];
-            manager.load(level_set[i], TiledMap.class);
+            this.level_set.add("maps/" + level_set[i]);
+//            level_set[i] = "maps/" + level_set[i];
+            manager.load(this.level_set.get(i), TiledMap.class);
+//            manager.load(level_set[i], TiledMap.class);
         }
         String[] art = {"heart.png", "half_heart.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
                 "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png", "eKey.png"};
@@ -96,7 +96,7 @@ public class Game implements Screen, InputProcessor {
         }
         manager.finishLoading();
 
-        map = manager.get(level_set[level_number], TiledMap.class);
+        map = manager.get(this.level_set.get(level_number), TiledMap.class);
         renderer = new OrthogonalTiledMapRenderer(map);
 
         debugRenderer.setAutoShapeType(true);
@@ -299,8 +299,8 @@ public class Game implements Screen, InputProcessor {
         level_number++;
         player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);
         activeObjects.clear();
-        if (level_number < level_set.length) {
-            map = manager.get(level_set[level_number], TiledMap.class);
+        if (level_number < level_set.size) {
+            map = manager.get(this.level_set.get(level_number), TiledMap.class);
             renderer.setMap(map);
             player.spawn();
 
