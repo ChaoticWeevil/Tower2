@@ -85,9 +85,7 @@ public class Game implements Screen, InputProcessor {
         manager.setLoader(TiledMap.class, new TmxMapLoader());
         for (int i = 0; i < level_set.length; i++) {
             this.level_set.add("maps/" + level_set[i]);
-//            level_set[i] = "maps/" + level_set[i];
             manager.load(this.level_set.get(i), TiledMap.class);
-//            manager.load(level_set[i], TiledMap.class);
         }
         String[] art = {"heart.png", "half_heart.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
                 "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png", "eKey.png"};
