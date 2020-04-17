@@ -48,8 +48,10 @@ public class fakeLoadingScreen implements Screen {
         loadingMessage = parent.loadingMessages.get(rand.nextInt(parent.loadingMessages.size()));
 
         Label lbl = new Label(loadingMessage, skin);
-        lbl.setPosition(5, parent.HEIGHT-20);
         lbl.setVisible(true);
+        lbl.setWidth(1300);
+        lbl.setWrap(true);
+        lbl.setPosition(5, parent.HEIGHT - lbl.getHeight() - 10);
         stage.addActor(lbl);
 
         final TextButton btnContinue = new TextButton("Next Level", skin);
@@ -104,7 +106,7 @@ public class fakeLoadingScreen implements Screen {
         batch.begin();
         batch.draw(t, parent.WIDTH/2f - 50, parent.HEIGHT/2f-100);
         font.draw(batch, "Loading" + loadingDots, 10, 50);
-        font.draw(batch, "Tree Growth: " + (int)((float)parent.player.score / parent.MAX_SCORE * 100) + "%", parent.WIDTH /2f - 40, parent.HEIGHT - 10);
+        font.draw(batch, "Tree Growth: " + (int)((float)parent.player.score / parent.MAX_SCORE * 100) + "%", parent.WIDTH /2f - 90, 200);
         batch.end();
     }
 

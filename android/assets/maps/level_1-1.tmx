@@ -233,7 +233,7 @@
     <property name="spawn" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="180" name="Exit" x="70.875" y="168.125" width="69" height="112">
+  <object id="180" name="Exit" x="72.875" y="172.125" width="69" height="112">
    <properties>
     <property name="Exit" type="bool" value="true"/>
    </properties>

@@ -164,7 +164,6 @@ public class Game implements Screen, InputProcessor {
                 , 0.1f
                 , 0.01f
         );
-
         // Tutorial Popup Window
         final Dialog d = new Dialog("Tutorial", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))) {
             public void result(Object obj) {
@@ -335,7 +334,7 @@ public class Game implements Screen, InputProcessor {
             }
         };
         Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " + (int) ((float) player.score / MAX_SCORE * 100) + "%"
-                + ".\nYou collected "  + player.carPartsFound + " car parts.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+                + ".\nYou collected "  + player.carPartsFound + " electric car parts.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         d.getContentTable().align(Align.center);
         d.align(Align.topLeft);
         text.setAlignment(Align.center);
