@@ -356,6 +356,8 @@ public class Game implements Screen, InputProcessor {
         d.setHeight(168);
         stage.addActor(d);
         Gdx.input.setInputProcessor(stage);
+        player.y_velocity = player.x_velocity = 0;
+        player.right = player.left = player.jump = false;
     }
 
     // Unused Methods
