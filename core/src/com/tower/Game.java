@@ -31,6 +31,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.strongjoshua.console.Console;
+import com.strongjoshua.console.GUIConsole;
 import com.tower.gameObjects.AndGate;
 import com.tower.gameObjects.Gate;
 import com.tower.gameObjects.OrGate;
@@ -62,6 +64,7 @@ public class Game implements Screen, InputProcessor {
 
     Boolean debug_mode;
     Boolean test = false;
+    Boolean loadingScreens = true;
 
     Array<String> level_set = new Array<>();
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
@@ -75,6 +78,8 @@ public class Game implements Screen, InputProcessor {
     public final int MAX_SCORE = 900;
     int MAP_HEIGHT;
     int MAP_WIDTH;
+
+    Console console = new GUIConsole();
 
 
     public int level_number = 0;
@@ -152,6 +157,11 @@ public class Game implements Screen, InputProcessor {
             }
         }
 
+        console.setCommandExecutor(new consoleCommands(this));
+        console.setDisplayKeyID(Input.Keys.GRAVE);
+
+
+
         // Starts the game by running update method
         Timer.schedule(new Timer.Task() {
                            @Override
@@ -167,6 +177,7 @@ public class Game implements Screen, InputProcessor {
             public void result(Object obj) {
                 stage.clear();
                 Gdx.input.setInputProcessor(parent.game);
+                console.resetInputProcessing();
 
             }
         };
@@ -184,6 +195,7 @@ public class Game implements Screen, InputProcessor {
         d.setHeight(168);
         stage.addActor(d);
         Gdx.input.setInputProcessor(stage);
+        console.resetInputProcessing();
     }
 
     // Runs 100 times per second
@@ -207,6 +219,7 @@ public class Game implements Screen, InputProcessor {
         renderHud(batch);
         if (debug_mode) renderDebug(batch);
         batch.end();
+        console.draw();
     }
 
     public void renderDebug(SpriteBatch batch) {
@@ -317,8 +330,7 @@ public class Game implements Screen, InputProcessor {
                 } catch (NullPointerException ignored) {
                 }
             }
-
-            parent.change_screen(new fakeLoadingScreen(this));
+            if (loadingScreens) parent.change_screen(new fakeLoadingScreen(this));
         }
         else wonGame();
     }
@@ -372,7 +384,6 @@ public class Game implements Screen, InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        if (character == "`".charAt(0)) debug_mode = !debug_mode;
         return false;
     }
 

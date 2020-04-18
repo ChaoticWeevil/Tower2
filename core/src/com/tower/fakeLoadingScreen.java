@@ -72,6 +72,7 @@ public class fakeLoadingScreen implements Screen {
                 );
                 Gdx.input.setInputProcessor(parent);
                 parent.parent.change_screen(parent.parent.game);
+                parent.console.resetInputProcessing();
 
             }
         });
