@@ -78,7 +78,6 @@ public class Player {
         tempObjects.clear();
         for (String check : parent.gameObjects) {
             objects = parent.getTiles(rect, objects, check);
-            objects = parent.getTiles(rect, objects, check);
             for (Rectangle r : objects) {
                 switch (check) {
                     case "Ladder":
@@ -124,7 +123,6 @@ public class Player {
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity - 1,
                 sprite.getWidth(), sprite.getHeight());
         objects = parent.getTiles(rect, objects, "platform");
-        objects = parent.getTiles(rect, objects, "platform");
         if (objects.isEmpty()) {
             grounded = false;
             parent.test = false;
@@ -169,8 +167,7 @@ public class Player {
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                 sprite.getWidth(), sprite.getHeight());
-        objects = parent.getTiles(rect, objects, "platform");
-        objects = parent.getTiles(rect, objects, "platform");
+                objects = parent.getTiles(rect, objects, "platform");
         if (!objects.isEmpty()) {
             x_velocity = 0;
         }
@@ -178,7 +175,6 @@ public class Player {
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity + 1,
                 sprite.getWidth(), sprite.getHeight());
-        objects = parent.getTiles(rect, objects, "platform");
         objects = parent.getTiles(rect, objects, "platform");
         if (!objects.isEmpty()) {
             if (y_velocity > 0) {
@@ -205,7 +201,6 @@ public class Player {
         try {
             spawn_location = new Rectangle();
             spawn_location.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
-            objects = parent.getTiles(spawn_location, objects, "spawn");
             objects = parent.getTiles(spawn_location, objects, "spawn");
             spawn_location.set(objects.first());
             spawn_location.y += 1;

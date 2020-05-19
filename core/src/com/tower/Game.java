@@ -294,7 +294,6 @@ public class Game implements Screen, InputProcessor {
         MapObjects objects = layer.getObjects();
         for (MapObject object : objects) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            rectangle.y = MAP_HEIGHT - rectangle.y;
             try {
                 if (rect.overlaps(rectangle) && (check.equals("none") || (Boolean) object.getProperties().get(check))) {
                     tiles.add(rectangle);
@@ -305,6 +304,9 @@ public class Game implements Screen, InputProcessor {
         }
         return tiles;
     }
+
+
+
 
     public void nextLevel() {
         level_number++;
