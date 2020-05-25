@@ -70,7 +70,7 @@ public class Game implements Screen, InputProcessor {
     Boolean test = false;
     Boolean loadingScreens = true;
     final Array<String> level_set = new Array<>();
-    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
+    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint"};
     final String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
     final ArrayList<String> loadingMessages = new ArrayList<>();
     final Array<gameObject> activeObjects = new Array<>();
@@ -86,7 +86,7 @@ public class Game implements Screen, InputProcessor {
             this.level_set.add("maps/" + level_set[i]);
             manager.load(this.level_set.get(i), TiledMap.class);
         }
-        String[] art = {"heart.png", "half_heart.png", "p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
+        String[] art = {"p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
                 "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png", "eKey.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
@@ -252,6 +252,7 @@ public class Game implements Screen, InputProcessor {
             player.left = player.right = player.jump = false;
             parent.change_screen(parent.menu);
             Gdx.input.setInputProcessor(parent.menu.play_stage);
+            console.resetInputProcessing();
         } else if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
             player.left = true;
         } else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
@@ -305,6 +306,7 @@ public class Game implements Screen, InputProcessor {
         if (level_number < level_set.size) {
             map = manager.get(this.level_set.get(level_number), TiledMap.class);
             renderer.setMap(map);
+            player.findStart();
             player.spawn();
 
             // Add active map objects to array
@@ -347,6 +349,7 @@ public class Game implements Screen, InputProcessor {
         d.setHeight(168);
         stage.addActor(d);
         Gdx.input.setInputProcessor(stage);
+        console.resetInputProcessing();
         player.y_velocity = player.x_velocity = 0;
         player.right = player.left = player.jump = false;
     }

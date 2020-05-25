@@ -122,6 +122,7 @@ public class Menu implements Screen {
                 Gdx.input.setInputProcessor(parent.game);
                 parent.change_screen(parent.game);
                 Gdx.input.setInputProcessor(parent.game);
+                parent.game.console.resetInputProcessing();
             }
         });
         new_game.addListener(new ChangeListener() {

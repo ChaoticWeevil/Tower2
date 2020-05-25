@@ -33,7 +33,7 @@ public class Player {
     private Array<Rectangle> objects = new Array<>();
     Array<gameObject> overlappedObjects = new Array<>();
     private final Array<gameObject> tempObjects = new Array<>();
-    Rectangle spawn_location;
+    public Rectangle spawnLocation;
 
     public int fertilizerFound = 0;
     public int carPartsFound = 0;
@@ -47,6 +47,8 @@ public class Player {
         sprite = new Sprite(p_right);
         sprite.setX(parent.WIDTH / 2f);
         sprite.setY(parent.HEIGHT / 2f);
+
+        findStart();
         spawn();
 
     }
@@ -98,6 +100,10 @@ public class Player {
                     case "Switch":
                         tempObjects.add(new Switch(parent, r.x, r.y, r.width, r.height));
                         break;
+                    case "SpawnPoint":
+                        tempObjects.add(new SpawnPoint(parent, r.x, r.y, r.width, r.height));
+                        break;
+
                 }
             }
         }
@@ -192,26 +198,23 @@ public class Player {
 
     public void respawn() {
         currentLevelDeaths++;
-        parent.camera.position.x = spawn_location.x;
-        parent.camera.position.y = spawn_location.y;
+        parent.camera.position.x = spawnLocation.x;
+        parent.camera.position.y = spawnLocation.y;
         x_velocity = y_velocity = 0;
     }
 
     public void spawn() {
-        try {
-            spawn_location = new Rectangle();
-            spawn_location.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
-            objects = parent.getTiles(spawn_location, objects, "spawn");
-            spawn_location.set(objects.first());
-            spawn_location.y += 1;
-            parent.camera.position.x = spawn_location.x;
-            parent.camera.position.y = spawn_location.y;
-            objects.clear();
-        } catch (Exception ignored) {
-            parent.camera.position.x = parent.WIDTH / 2f;
-            parent.camera.position.y = parent.HEIGHT / 2f;
-        }
+        parent.camera.position.x = spawnLocation.x;
+        parent.camera.position.y = spawnLocation.y;
         y_velocity = x_velocity = 0;
         left = right = jump = false;
+    }
+
+    public void findStart() {
+        spawnLocation = new Rectangle();
+        spawnLocation.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
+        objects = parent.getTiles(spawnLocation, objects, "spawn");
+        spawnLocation.set(objects.first());
+        spawnLocation.y += 1;
     }
 }
