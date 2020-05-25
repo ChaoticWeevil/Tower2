@@ -19,7 +19,7 @@ public class Player {
     final float GRAVITY = -0.2f;
     public final float JUMP_SPEED = 7.8f;
 
-    private Game parent;
+    private final Game parent;
     Sprite sprite;
     boolean left;
     boolean right;
@@ -32,7 +32,7 @@ public class Player {
     public boolean onLadder = false;
     private Array<Rectangle> objects = new Array<>();
     Array<gameObject> overlappedObjects = new Array<>();
-    private Array<gameObject> tempObjects = new Array<>();
+    private final Array<gameObject> tempObjects = new Array<>();
     Rectangle spawn_location;
 
     public int fertilizerFound = 0;

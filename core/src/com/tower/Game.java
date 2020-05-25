@@ -44,45 +44,39 @@ import java.util.Scanner;
 
 
 public class Game implements Screen, InputProcessor {
+    public final int WIDTH = 1366;
+    public final int HEIGHT = 768;
+    public final int MAX_SCORE = 900;
     public TiledMap map;
-    public AssetManager manager = new AssetManager();
-    OrthographicCamera camera = new OrthographicCamera();
-    OrthogonalTiledMapRenderer renderer;
-    SpriteBatch batch = new SpriteBatch();
+    public final AssetManager manager = new AssetManager();
     public Player player;
-    BitmapFont font = new BitmapFont();
-    Main parent;
-    StretchViewport viewport;
-    ShapeRenderer debugRenderer = new ShapeRenderer();
+    public final Stage stage = new Stage();
+    public final HashMap<Integer, Integer> signals = new HashMap<>();
+    public int level_number = 0;
+    final OrthographicCamera camera = new OrthographicCamera();
+    final OrthogonalTiledMapRenderer renderer;
+    final SpriteBatch batch = new SpriteBatch();
+    final BitmapFont font = new BitmapFont();
+    final Main parent;
+    final StretchViewport viewport;
+    final ShapeRenderer debugRenderer = new ShapeRenderer();
     Pool<Rectangle> rectPool = new Pool<Rectangle>() {
         @Override
         protected Rectangle newObject() {
             return new Rectangle();
         }
     };
-    public Stage stage = new Stage();
-
     Boolean debug_mode;
     Boolean test = false;
     Boolean loadingScreens = true;
-
-    Array<String> level_set = new Array<>();
+    final Array<String> level_set = new Array<>();
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch"};
-    String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
-    ArrayList<String> loadingMessages = new ArrayList<>();
-    Array<gameObject> activeObjects = new Array<>();
-    public HashMap<Integer, Integer> signals = new HashMap<>();
-
-    public final int WIDTH = 1366;
-    public final int HEIGHT = 768;
-    public final int MAX_SCORE = 900;
-    int MAP_HEIGHT;
-    int MAP_WIDTH;
-
-    Console console = new GUIConsole();
-
-
-    public int level_number = 0;
+    final String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
+    final ArrayList<String> loadingMessages = new ArrayList<>();
+    final Array<gameObject> activeObjects = new Array<>();
+    final int MAP_HEIGHT;
+    final int MAP_WIDTH;
+    final Console console = new GUIConsole();
 
     public Game(final Main parent, String[] level_set) {
         this.parent = parent;
@@ -159,7 +153,6 @@ public class Game implements Screen, InputProcessor {
 
         console.setCommandExecutor(new consoleCommands(this));
         console.setDisplayKeyID(Input.Keys.GRAVE);
-
 
 
         // Starts the game by running update method
@@ -305,9 +298,6 @@ public class Game implements Screen, InputProcessor {
         return tiles;
     }
 
-
-
-
     public void nextLevel() {
         level_number++;
         player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);
@@ -333,8 +323,7 @@ public class Game implements Screen, InputProcessor {
                 }
             }
             if (loadingScreens) parent.change_screen(new fakeLoadingScreen(this));
-        }
-        else wonGame();
+        } else wonGame();
     }
 
     public void wonGame() {
@@ -346,7 +335,7 @@ public class Game implements Screen, InputProcessor {
             }
         };
         Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " + (int) ((float) player.score / MAX_SCORE * 100) + "%"
-                + ".\nYou collected "  + player.carPartsFound + " electric car parts.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+                + ".\nYou collected " + player.carPartsFound + " electric car parts.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         d.getContentTable().align(Align.center);
         d.align(Align.topLeft);
         text.setAlignment(Align.center);
