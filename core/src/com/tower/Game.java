@@ -37,7 +37,6 @@ import com.tower.gameObjects.AndGate;
 import com.tower.gameObjects.Gate;
 import com.tower.gameObjects.OrGate;
 import com.tower.gameObjects.gameObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -86,8 +85,9 @@ public class Game implements Screen, InputProcessor {
             this.level_set.add("maps/" + level_set[i]);
             manager.load(this.level_set.get(i), TiledMap.class);
         }
-        String[] art = {"p_right.png", "p_left.png", "carPart.png", "Trees/Tree1.png", "Trees/Tree2.png", "Trees/Tree3.png", "Trees/Tree4.png", "Trees/Tree5.png", "Trees/Tree6.png",
-                "switchRight.png", "switchLeft.png", "ers.png", "blankTile.png", "eKey.png"};
+        String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
+                        "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
+                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "textures/ers.png", "maps/tiles/blankTile.png", "textures/eKey.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }

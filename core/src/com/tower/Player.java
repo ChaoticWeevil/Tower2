@@ -42,8 +42,8 @@ public class Player {
 
     public Player(Game parent) {
         this.parent = parent;
-        p_left = parent.manager.get("p_left.png", Texture.class);
-        p_right = parent.manager.get("p_right.png", Texture.class);
+        p_left = parent.manager.get("textures/player/p_left.png", Texture.class);
+        p_right = parent.manager.get("textures/player/p_right.png", Texture.class);
         sprite = new Sprite(p_right);
         sprite.setX(parent.WIDTH / 2f);
         sprite.setY(parent.HEIGHT / 2f);
