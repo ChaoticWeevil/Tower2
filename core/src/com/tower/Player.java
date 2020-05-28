@@ -1,8 +1,8 @@
 package com.tower;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -19,6 +19,13 @@ public class Player {
     final float GRAVITY = -0.2f;
     public final float JUMP_SPEED = 7.8f;
 
+    final int WALKING = 1;
+    final int JUMPING = 2;
+    final int STANDING = 3;
+    int state = WALKING;
+    float stateTime = 0f;
+
+
     private final Game parent;
     Sprite sprite;
     boolean left;
@@ -34,6 +41,7 @@ public class Player {
     Array<gameObject> overlappedObjects = new Array<>();
     private final Array<gameObject> tempObjects = new Array<>();
     public Rectangle spawnLocation;
+    Animation<TextureRegion> walk;
 
     public int fertilizerFound = 0;
     public int carPartsFound = 0;
@@ -48,13 +56,27 @@ public class Player {
         sprite.setX(parent.WIDTH / 2f);
         sprite.setY(parent.HEIGHT / 2f);
 
+        TextureAtlas atlas = new TextureAtlas("Textures/player/walkAnimation/walk.atlas");
+
+        walk = new Animation<TextureRegion>(0.1f, atlas.getRegions());
+
+
         findStart();
         spawn();
 
     }
 
     public void render(Batch batch) {
-        sprite.draw(batch);
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentFrame;
+        if (state == WALKING) {
+            currentFrame = walk.getKeyFrame(stateTime, true);
+            if (left && !currentFrame.isFlipX()) currentFrame.flip(true, false);
+            else if (right && currentFrame.isFlipX()) currentFrame.flip(true, false);
+        }
+        else if (state == JUMPING) currentFrame = new TextureRegion(sprite.getTexture());
+        else currentFrame = new TextureRegion(sprite.getTexture());
+        batch.draw(currentFrame, sprite.getX(), sprite.getY());
         for (gameObject o : overlappedObjects) {
             if (o.hasActivateMethod) batch.draw(parent.manager.get("eKey.png", Texture.class), sprite.getX() + (sprite.getWidth()/2f - 17), sprite.getY() + sprite.getHeight() + 10);
         }
@@ -143,14 +165,22 @@ public class Player {
         if (left) {
             if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
             x_velocity -= ACCELERATION;
+            state = WALKING;
         }
-        if (right) {
+        else if (right) {
             if (sprite.getTexture() != p_right) sprite.setTexture(p_right);
             x_velocity += ACCELERATION;
+            state = WALKING;
+        }
+        else {
+            state = STANDING;
         }
         if (jump) {
-            if (grounded || onLadder) y_velocity += JUMP_SPEED;
+            if (grounded || onLadder) {
+                y_velocity += JUMP_SPEED;
+            }
         }
+        if (!grounded) state = JUMPING;
 
 
         if (x_velocity > 0) {
