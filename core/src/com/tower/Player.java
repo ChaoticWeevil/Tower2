@@ -22,6 +22,9 @@ public class Player {
     final int WALKING = 1;
     final int JUMPING = 2;
     final int STANDING = 3;
+    final int LEFT = 1;
+    final int RIGHT = 2;
+    int facing = RIGHT;
     int state = WALKING;
     float stateTime = 0f;
 
@@ -30,7 +33,7 @@ public class Player {
     Sprite sprite;
     boolean left;
     boolean right;
-    boolean jump;
+    boolean jumping;
     Texture p_left;
     Texture p_right;
     public float y_velocity = 0;
@@ -42,6 +45,8 @@ public class Player {
     private final Array<gameObject> tempObjects = new Array<>();
     public Rectangle spawnLocation;
     Animation<TextureRegion> walk;
+    Animation<TextureRegion> jump;
+    Animation<TextureRegion> idle;
 
     public int fertilizerFound = 0;
     public int carPartsFound = 0;
@@ -61,6 +66,12 @@ public class Player {
         walk = new Animation<TextureRegion>(0.1f, atlas.getRegions());
 
 
+        atlas = new TextureAtlas("Textures/player/jumpAnimation/jump.atlas");
+        jump = new Animation<TextureRegion>(0.05f, atlas.getRegions().toArray());
+
+        atlas = new TextureAtlas("Textures/player/idleAnimation/idle.atlas");
+        idle = new Animation<TextureRegion>(0.3f, atlas.getRegions());
+
         findStart();
         spawn();
 
@@ -73,12 +84,20 @@ public class Player {
             currentFrame = walk.getKeyFrame(stateTime, true);
             if (left && !currentFrame.isFlipX()) currentFrame.flip(true, false);
             else if (right && currentFrame.isFlipX()) currentFrame.flip(true, false);
+        } else if (state == JUMPING) {
+            currentFrame = new TextureRegion(parent.manager.get("Textures/player/jump-5.png", Texture.class));
+            if (facing == LEFT && !currentFrame.isFlipX()) currentFrame.flip(true, false);
+            else if (facing == RIGHT && currentFrame.isFlipX()) currentFrame.flip(true, false);
+        } else {
+            currentFrame = idle.getKeyFrame(stateTime, true);
+            if (facing == LEFT && !currentFrame.isFlipX()) currentFrame.flip(true, false);
+            else if (facing == RIGHT && currentFrame.isFlipX()) currentFrame.flip(true, false);
         }
-        else if (state == JUMPING) currentFrame = new TextureRegion(sprite.getTexture());
-        else currentFrame = new TextureRegion(sprite.getTexture());
+
         batch.draw(currentFrame, sprite.getX(), sprite.getY());
         for (gameObject o : overlappedObjects) {
-            if (o.hasActivateMethod) batch.draw(parent.manager.get("eKey.png", Texture.class), sprite.getX() + (sprite.getWidth()/2f - 17), sprite.getY() + sprite.getHeight() + 10);
+            if (o.hasActivateMethod)
+                batch.draw(parent.manager.get("eKey.png", Texture.class), sprite.getX() + (sprite.getWidth() / 2f - 17), sprite.getY() + sprite.getHeight() + 10);
         }
     }
 
@@ -137,7 +156,7 @@ public class Player {
 
         }
         for (gameObject o : tempObjects) {
-            if(notContainsObject(overlappedObjects, o)) {
+            if (notContainsObject(overlappedObjects, o)) {
                 overlappedObjects.add(o);
                 o.onEnter();
             }
@@ -163,19 +182,19 @@ public class Player {
         }
 
         if (left) {
+            facing = LEFT;
             if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
             x_velocity -= ACCELERATION;
             state = WALKING;
-        }
-        else if (right) {
+        } else if (right) {
+            facing = RIGHT;
             if (sprite.getTexture() != p_right) sprite.setTexture(p_right);
             x_velocity += ACCELERATION;
             state = WALKING;
-        }
-        else {
+        } else {
             state = STANDING;
         }
-        if (jump) {
+        if (jumping) {
             if (grounded || onLadder) {
                 y_velocity += JUMP_SPEED;
             }
@@ -203,7 +222,7 @@ public class Player {
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                 sprite.getWidth(), sprite.getHeight());
-                objects = parent.getTiles(rect, objects, "platform");
+        objects = parent.getTiles(rect, objects, "platform");
         if (!objects.isEmpty()) {
             x_velocity = 0;
         }
@@ -237,7 +256,7 @@ public class Player {
         parent.camera.position.x = spawnLocation.x;
         parent.camera.position.y = spawnLocation.y;
         y_velocity = x_velocity = 0;
-        left = right = jump = false;
+        left = right = jumping = false;
     }
 
     public void findStart() {

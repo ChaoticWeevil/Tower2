@@ -1,0 +1,48 @@
+
+jump.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+download-0
+  rotate: false
+  xy: 148, 2
+  size: 54, 108
+  orig: 54, 108
+  offset: 0, 0
+  index: -1
+download-1
+  rotate: false
+  xy: 204, 2
+  size: 54, 108
+  orig: 54, 108
+  offset: 0, 0
+  index: -1
+download-2
+  rotate: false
+  xy: 260, 2
+  size: 54, 108
+  orig: 54, 108
+  offset: 0, 0
+  index: -1
+download-3
+  rotate: false
+  xy: 316, 2
+  size: 54, 108
+  orig: 54, 108
+  offset: 0, 0
+  index: -1
+download-4
+  rotate: false
+  xy: 2, 2
+  size: 71, 108
+  orig: 71, 108
+  offset: 0, 0
+  index: -1
+download-5
+  rotate: false
+  xy: 75, 2
+  size: 71, 108
+  orig: 71, 108
+  offset: 0, 0
+  index: -1

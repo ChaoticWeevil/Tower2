@@ -87,7 +87,8 @@ public class Game implements Screen, InputProcessor {
         }
         String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
                         "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
-                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "textures/ers.png", "maps/tiles/blankTile.png", "textures/eKey.png"};
+                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "textures/ers.png", "maps/tiles/blankTile.png", "textures/eKey.png",
+                        "Textures/player/jump-5.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
@@ -224,6 +225,7 @@ public class Game implements Screen, InputProcessor {
                         + "\nCar Parts: " + player.carPartsFound
                         + "\nScore: " + player.score
                         + "\nSignals: " + signals
+                        + "\nLeft: " + player.left + " |Right: " + player.right
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
@@ -249,7 +251,7 @@ public class Game implements Screen, InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
             Timer.instance().stop();
-            player.left = player.right = player.jump = false;
+            player.left = player.right = player.jumping = false;
             parent.change_screen(parent.menu);
             Gdx.input.setInputProcessor(parent.menu.play_stage);
             console.resetInputProcessing();
@@ -258,7 +260,7 @@ public class Game implements Screen, InputProcessor {
         } else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
             player.right = true;
         } else if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
-            player.jump = true;
+            player.jumping = true;
         } else if (keycode == Input.Keys.E) {
             for (gameObject o : player.overlappedObjects) {
                 o.onActivate();
@@ -277,7 +279,7 @@ public class Game implements Screen, InputProcessor {
             player.right = false;
         }
         if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
-            player.jump = false;
+            player.jumping = false;
         }
         return false;
     }
@@ -351,7 +353,7 @@ public class Game implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(stage);
         console.resetInputProcessing();
         player.y_velocity = player.x_velocity = 0;
-        player.right = player.left = player.jump = false;
+        player.right = player.left = player.jumping = false;
     }
 
     // Unused Methods
