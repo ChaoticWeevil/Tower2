@@ -33,10 +33,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.strongjoshua.console.Console;
 import com.strongjoshua.console.GUIConsole;
-import com.tower.gameObjects.AndGate;
-import com.tower.gameObjects.Gate;
-import com.tower.gameObjects.OrGate;
-import com.tower.gameObjects.gameObject;
+import com.tower.gameObjects.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -69,12 +67,12 @@ public class Game implements Screen, InputProcessor {
     Boolean test = false;
     Boolean loadingScreens = true;
     final Array<String> level_set = new Array<>();
-    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint"};
+    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint", "Trigger"};
     final String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
     final ArrayList<String> loadingMessages = new ArrayList<>();
     final Array<gameObject> activeObjects = new Array<>();
-    final int MAP_HEIGHT;
-    final int MAP_WIDTH;
+    int MAP_HEIGHT;
+    int MAP_WIDTH;
     final Console console = new GUIConsole();
 
     public Game(final Main parent, String[] level_set) {
@@ -87,7 +85,7 @@ public class Game implements Screen, InputProcessor {
         }
         String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
                         "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
-                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "textures/ers.png", "maps/tiles/blankTile.png", "textures/eKey.png",
+                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "textures/ers.png", "maps/Tiles/blankTile.png", "textures/eKey.png",
                         "Textures/player/jump-5.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
@@ -154,7 +152,6 @@ public class Game implements Screen, InputProcessor {
 
         console.setCommandExecutor(new consoleCommands(this));
         console.setDisplayKeyID(Input.Keys.GRAVE);
-
 
         // Starts the game by running update method
         Timer.schedule(new Timer.Task() {
@@ -288,6 +285,7 @@ public class Game implements Screen, InputProcessor {
         tiles.clear();
         MapLayer layer = map.getLayers().get("Collision_Layer");
         MapObjects objects = layer.getObjects();
+        // 11
         for (MapObject object : objects) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             try {
@@ -308,6 +306,8 @@ public class Game implements Screen, InputProcessor {
         if (level_number < level_set.size) {
             map = manager.get(this.level_set.get(level_number), TiledMap.class);
             renderer.setMap(map);
+            MAP_HEIGHT = map.getProperties().get("height", Integer.class) * 70;
+            MAP_WIDTH = map.getProperties().get("width", Integer.class) * 70;
             player.findStart();
             player.spawn();
 

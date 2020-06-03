@@ -144,7 +144,8 @@ public class Player {
                     case "SpawnPoint":
                         tempObjects.add(new SpawnPoint(parent, r.x, r.y, r.width, r.height));
                         break;
-
+                    case "Trigger":
+                        tempObjects.add(new Trigger(parent, r.x, r.y, r.width, r.height));
                 }
             }
         }
@@ -183,12 +184,10 @@ public class Player {
 
         if (left) {
             facing = LEFT;
-            if (sprite.getTexture() != p_left) sprite.setTexture(p_left);
             x_velocity -= ACCELERATION;
             state = WALKING;
         } else if (right) {
             facing = RIGHT;
-            if (sprite.getTexture() != p_right) sprite.setTexture(p_right);
             x_velocity += ACCELERATION;
             state = WALKING;
         } else {
@@ -240,6 +239,7 @@ public class Player {
         parent.camera.position.x += x_velocity;
         parent.camera.position.y += y_velocity;
 
+
         if (parent.camera.position.y < -100) {
             respawn();
         }
@@ -263,7 +263,7 @@ public class Player {
         spawnLocation = new Rectangle();
         spawnLocation.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
         objects = parent.getTiles(spawnLocation, objects, "spawn");
-        spawnLocation.set(objects.first());
+        spawnLocation.set(objects.first()); // 0
         spawnLocation.y += 1;
     }
 }

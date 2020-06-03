@@ -7,7 +7,7 @@ public class Main extends com.badlogic.gdx.Game {
     Menu menu;
     Game game;
 
-    final String[] level_set_1 = {"level_1-1.tmx", "level_1-2.tmx", "placeholder.tmx"};
+    final String[] level_set_1 = {"level_1-1.tmx", "level_1-2.tmx", "level_1-3.tmx", "placeholder.tmx"};
 
     @Override
     public void create() {

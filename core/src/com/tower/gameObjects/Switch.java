@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.tower.Game;
 
+
 public class Switch extends gameObject {
     Game parent;
     float x;
