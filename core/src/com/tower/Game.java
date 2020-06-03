@@ -37,6 +37,7 @@ import com.tower.gameObjects.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 
 
@@ -120,6 +121,22 @@ public class Game implements Screen, InputProcessor {
 
         // Add active map objects to array
         MapObjects objects = map.getLayers().get("Collision_Layer").getObjects();
+        for (int num = 0; num<10; num++) {
+            Iterator<String> iterator = map.getProperties().getKeys();
+            while (iterator.hasNext()) {
+                int mapNum;
+                try {
+                    mapNum = Integer.parseInt(iterator.next());
+                }
+                catch (Exception ignored){
+                    continue;
+                }
+                if (mapNum == num) {
+
+                    signals.put(num, map.getProperties().get(String.valueOf(mapNum), Integer.class));
+                }
+            }
+        }
         for (MapObject object : objects) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             try {

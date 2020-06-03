@@ -10,13 +10,22 @@ public class consoleCommands extends CommandExecutor {
     public void debug (Boolean value) {
         game.debug_mode = value;
     }
+    public void d (Boolean value) {
+        game.debug_mode = value;
+    }
     public void nextLevel () {
+        game.nextLevel();
+    }
+    public void nl () {
         game.nextLevel();
     }
     public void setGrowth (int value) {
         game.player.score = value;
     }
     public void loadingScreens (Boolean value) {
+        game.loadingScreens = value;
+    }
+    public void ls (Boolean value) {
         game.loadingScreens = value;
     }
 
