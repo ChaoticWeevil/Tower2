@@ -56,6 +56,6 @@ public class MovingPlatform extends gameObject {
                 currentDirection = "RIGHT";
             }
         }
-        rect.set(currentX, currentY, collisionWidth, collisionHeight);
+        updateRect();
     }
 }

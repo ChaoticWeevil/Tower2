@@ -169,38 +169,37 @@ public class Player {
             o.overlappedUpdate();
         }
 
-        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
-                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity - 1,
+
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity - 2,
                 sprite.getWidth(), sprite.getHeight());
+
         platforms = parent.getMovingPlatforms(rect, platforms);
-        if (!platforms.isEmpty()) { // TODO
+        if (!platforms.isEmpty()) {
             onMovingPlatform = true;
             movingPlatform = platforms.first();
-        }
-        else {
+        } else {
             onMovingPlatform = false;
         }
 
-
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity - 2,
+                sprite.getWidth(), sprite.getHeight());
         objects = parent.getMapObjects(rect, objects, "platform");
-        if (!objects.isEmpty() || onMovingPlatform) {
+        if (!objects.isEmpty()) {
             grounded = true;
             y_velocity = 0;
         }
         else {
             grounded = false;
         }
+        if (onMovingPlatform) {
+            if (sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f >= movingPlatform.y + movingPlatform.height - 1) {
+                grounded = true;
+                y_velocity = 0;
+            }
+        }
 
-//        if (objects.isEmpty() && !onMovingPlatform) {
-//            grounded = false;
-//            parent.test = false;
-//        } else {
-//            if (y_velocity <= 0) {
-//                parent.test = true;
-//                grounded = true;
-//            }
-//            y_velocity = 0;
-//        }
 
         if (left) {
             facing = LEFT;
@@ -234,7 +233,6 @@ public class Player {
         if (!grounded) y_velocity += GRAVITY;
 
 
-
         x_velocity = MathUtils.clamp(x_velocity, -MAX_X_VELOCITY, MAX_X_VELOCITY);
         if (onLadder) y_velocity = MathUtils.clamp(y_velocity, -MAX_LADDER_VELOCITY, MAX_LADDER_VELOCITY);
         else y_velocity = MathUtils.clamp(y_velocity, -MAX_Y_VELOCITY, MAX_Y_VELOCITY);
@@ -243,7 +241,11 @@ public class Player {
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                 sprite.getWidth(), sprite.getHeight());
         objects = parent.getMapObjects(rect, objects, "platform");
+        rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity - 5,
+                sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
+                sprite.getWidth() + 5, sprite.getHeight());
         platforms = parent.getMovingPlatforms(rect, platforms);
+
         if (!objects.isEmpty() || !platforms.isEmpty()) {
             x_velocity = 0;
         }
@@ -262,8 +264,7 @@ public class Player {
         parent.camera.position.x += x_velocity;
         parent.camera.position.y += y_velocity;
 
-
-        if (onMovingPlatform) {//TODO
+        if (onMovingPlatform) {
             if (movingPlatform.currentDirection.equals("RIGHT")) {
                 parent.camera.position.x += 2;
                 rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
@@ -271,8 +272,7 @@ public class Player {
                         sprite.getWidth(), sprite.getHeight());
                 objects = parent.getMapObjects(rect, objects, "platform");
                 if (!objects.isEmpty()) parent.camera.position.x -= 2;
-            }
-            else {
+            } else {
                 parent.camera.position.x -= 2;
                 rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                         sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
@@ -283,11 +283,11 @@ public class Player {
         }
 
 
-
         if (parent.camera.position.y < -100) {
             respawn();
         }
     }
+
 
     public void respawn() {
         currentLevelDeaths++;

@@ -52,7 +52,7 @@ public class Game implements Screen, InputProcessor {
     public final Stage stage = new Stage();
     public final HashMap<Integer, Integer> signals = new HashMap<>();
     public int level_number = 0;
-    final OrthographicCamera camera = new OrthographicCamera();
+    public final OrthographicCamera camera = new OrthographicCamera();
     final OrthogonalTiledMapRenderer renderer;
     final SpriteBatch batch = new SpriteBatch();
     final BitmapFont font = new BitmapFont();
@@ -281,6 +281,7 @@ public class Game implements Screen, InputProcessor {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
+        console.refresh();
     }
 
     @Override
