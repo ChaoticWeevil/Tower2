@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -69,7 +70,7 @@ public class Game implements Screen, InputProcessor {
     Boolean loadingScreens = true;
     final Array<String> level_set = new Array<>();
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint", "Trigger"};
-    final String[] activeGameObjects = {"Gate", "AndGate", "OrGate"};
+    public Array<MovingPlatform> movingPlatforms = new Array<>();
     final ArrayList<String> loadingMessages = new ArrayList<>();
     final Array<gameObject> activeObjects = new Array<>();
     int MAP_HEIGHT;
@@ -86,7 +87,7 @@ public class Game implements Screen, InputProcessor {
         }
         String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
                         "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
-                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "textures/ers.png", "maps/Tiles/blankTile.png", "textures/eKey.png",
+                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "Textures/ers.png", "maps/Tiles/blankTile.png", "textures/eKey.png",
                         "Textures/player/jump-5.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
@@ -152,6 +153,13 @@ public class Game implements Screen, InputProcessor {
                         }
                     } catch (NullPointerException ignored) {
                     }
+                    try {
+                        if (object.getProperties().get("MovingPlatform", Boolean.class)) {
+                            activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
+                            , object.getProperties().get("Axis", String.class), object.getProperties().get("Texture", String.class)));
+                        }
+                    } catch (NullPointerException ignored) {}
+
                     if (object.getProperties().get("OrGate", Boolean.class)) {
                         activeObjects.add(new OrGate(this, rect.x, rect.y, rect.width, rect.height));
                     }
@@ -211,6 +219,7 @@ public class Game implements Screen, InputProcessor {
         player.update();
         camera.update();
         for (gameObject o : activeObjects) o.update();
+        for (MovingPlatform p : movingPlatforms) p.update();
 
     }
 
@@ -223,6 +232,12 @@ public class Game implements Screen, InputProcessor {
         renderer.setView(camera);
         renderer.render();
         batch.begin();
+        for (MovingPlatform platform: movingPlatforms) {
+            batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH/2f,
+                    platform.currentY - camera.position.y + HEIGHT/2f);
+        }
+
+
         player.render(batch);
         renderHud(batch);
         if (debug_mode) renderDebug(batch);
@@ -240,10 +255,17 @@ public class Game implements Screen, InputProcessor {
                         + "\nScore: " + player.score
                         + "\nSignals: " + signals
                         + "\nLeft: " + player.left + " |Right: " + player.right
+                        + "\nMovingPlatform: " + player.onMovingPlatform
+                        + "\nGrounded" + player.grounded
                 , 5, HEIGHT - 2);
         batch.end();
         debugRenderer.begin();
+        debugRenderer.setColor(Color.WHITE);
         debugRenderer.rect(player.sprite.getX(), player.sprite.getY(), player.sprite.getWidth(), player.sprite.getHeight());
+        movingPlatforms.first().updateRect();
+        Rectangle r = movingPlatforms.first().rect;
+        debugRenderer.setColor(Color.RED);
+        debugRenderer.rect(r.x - camera.position.x + WIDTH/2f, r.y - camera.position.y + HEIGHT/2f, r.width, r.height);
         debugRenderer.end();
         batch.begin();
     }
@@ -298,11 +320,10 @@ public class Game implements Screen, InputProcessor {
         return false;
     }
 
-    public Array<Rectangle> getTiles(Rectangle rect, Array<Rectangle> tiles, String check) {
+    public Array<Rectangle> getMapObjects(Rectangle rect, Array<Rectangle> tiles, String check) {
         tiles.clear();
         MapLayer layer = map.getLayers().get("Collision_Layer");
         MapObjects objects = layer.getObjects();
-        // 11
         for (MapObject object : objects) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             try {
@@ -315,11 +336,24 @@ public class Game implements Screen, InputProcessor {
         }
         return tiles;
     }
+    
+    public Array<MovingPlatform> getMovingPlatforms(Rectangle rect, Array<MovingPlatform> tiles) {
+        tiles.clear();
+        for (MovingPlatform p: movingPlatforms) {
+            p.updateRect();
+            if (rect.overlaps(p.rect) || p.rect.overlaps(rect)) {
+                tiles.add(p);
+            }
+        }
+        return tiles;
+    }
 
     public void nextLevel() {
         level_number++;
         player.score += MathUtils.clamp((200 - player.currentLevelDeaths * 25), 50, 200);
         activeObjects.clear();
+        movingPlatforms.clear();
+        signals.clear();
         if (level_number < level_set.size) {
             map = manager.get(this.level_set.get(level_number), TiledMap.class);
             renderer.setMap(map);
@@ -331,14 +365,38 @@ public class Game implements Screen, InputProcessor {
             // Add active map objects to array
             MapObjects objects = map.getLayers().get("Collision_Layer").getObjects();
             for (MapObject object : objects) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 try {
                     if ((Boolean) object.getProperties().get("Active")) {
-                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                        for (String check : activeGameObjects) {
-                            if ("Gate".equals(check)) {
-                                activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
+                        try {
+                            if (object.getProperties().get("MovingPlatform", Boolean.class)) {
+                                activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
+                                        , object.getProperties().get("axis", String.class), object.getProperties().get("texture", String.class)));
                             }
+                        } catch (NullPointerException ignored) {}
+                        try {
+                            if (object.getProperties().get("Gate", Boolean.class))
+                                activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
+                        } catch (NullPointerException ignored) {
                         }
+                        try {
+                            if (object.getProperties().get("AndGate", Boolean.class)) {
+                                activeObjects.add(new AndGate(this, rect.x, rect.y, rect.width, rect.height));
+                            }
+                        } catch (NullPointerException ignored) {
+                        }
+
+
+                        if (object.getProperties().get("OrGate", Boolean.class)) {
+                            activeObjects.add(new OrGate(this, rect.x, rect.y, rect.width, rect.height));
+                        }
+                    }
+                } catch (NullPointerException ignored) {
+                }
+                try {
+                    if (object.getProperties().get("HasCustomTexture", Boolean.class)) {
+                        ((TiledMapTileLayer) map.getLayers().get("Things")).getCell((int) rect.x / 70, (int) rect.y / 70).getTile()
+                                .setTextureRegion(new TextureRegion(manager.get(object.getProperties().get("OffTexture", String.class), Texture.class)));
                     }
                 } catch (NullPointerException ignored) {
                 }

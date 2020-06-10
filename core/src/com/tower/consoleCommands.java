@@ -28,5 +28,6 @@ public class consoleCommands extends CommandExecutor {
     public void ls (Boolean value) {
         game.loadingScreens = value;
     }
+    public void kill () {game.player.respawn();}
 
 }

@@ -40,7 +40,10 @@ public class Player {
     float x_velocity;
     boolean grounded = false;
     public boolean onLadder = false;
+    public boolean onMovingPlatform = false;
+    public MovingPlatform movingPlatform;
     private Array<Rectangle> objects = new Array<>();
+    private Array<MovingPlatform> platforms = new Array<>();
     Array<gameObject> overlappedObjects = new Array<>();
     private final Array<gameObject> tempObjects = new Array<>();
     public Rectangle spawnLocation;
@@ -120,7 +123,7 @@ public class Player {
                 sprite.getWidth(), sprite.getHeight());
         tempObjects.clear();
         for (String check : parent.gameObjects) {
-            objects = parent.getTiles(rect, objects, check);
+            objects = parent.getMapObjects(rect, objects, check);
             for (Rectangle r : objects) {
                 switch (check) {
                     case "Ladder":
@@ -166,21 +169,38 @@ public class Player {
             o.overlappedUpdate();
         }
 
-
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity - 1,
                 sprite.getWidth(), sprite.getHeight());
-        objects = parent.getTiles(rect, objects, "platform");
-        if (objects.isEmpty()) {
-            grounded = false;
-            parent.test = false;
-        } else {
-            if (y_velocity < 0) {
-                parent.test = true;
-                grounded = true;
-            }
+        platforms = parent.getMovingPlatforms(rect, platforms);
+        if (!platforms.isEmpty()) { // TODO
+            onMovingPlatform = true;
+            movingPlatform = platforms.first();
+        }
+        else {
+            onMovingPlatform = false;
+        }
+
+
+        objects = parent.getMapObjects(rect, objects, "platform");
+        if (!objects.isEmpty() || onMovingPlatform) {
+            grounded = true;
             y_velocity = 0;
         }
+        else {
+            grounded = false;
+        }
+
+//        if (objects.isEmpty() && !onMovingPlatform) {
+//            grounded = false;
+//            parent.test = false;
+//        } else {
+//            if (y_velocity <= 0) {
+//                parent.test = true;
+//                grounded = true;
+//            }
+//            y_velocity = 0;
+//        }
 
         if (left) {
             facing = LEFT;
@@ -214,6 +234,7 @@ public class Player {
         if (!grounded) y_velocity += GRAVITY;
 
 
+
         x_velocity = MathUtils.clamp(x_velocity, -MAX_X_VELOCITY, MAX_X_VELOCITY);
         if (onLadder) y_velocity = MathUtils.clamp(y_velocity, -MAX_LADDER_VELOCITY, MAX_LADDER_VELOCITY);
         else y_velocity = MathUtils.clamp(y_velocity, -MAX_Y_VELOCITY, MAX_Y_VELOCITY);
@@ -221,15 +242,17 @@ public class Player {
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                 sprite.getWidth(), sprite.getHeight());
-        objects = parent.getTiles(rect, objects, "platform");
-        if (!objects.isEmpty()) {
+        objects = parent.getMapObjects(rect, objects, "platform");
+        platforms = parent.getMovingPlatforms(rect, platforms);
+        if (!objects.isEmpty() || !platforms.isEmpty()) {
             x_velocity = 0;
         }
 
         rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f,
                 sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f + y_velocity + 1,
                 sprite.getWidth(), sprite.getHeight());
-        objects = parent.getTiles(rect, objects, "platform");
+        objects = parent.getMapObjects(rect, objects, "platform");
+        platforms = parent.getMovingPlatforms(rect, platforms);
         if (!objects.isEmpty()) {
             if (y_velocity > 0) {
                 y_velocity = 0;
@@ -238,6 +261,27 @@ public class Player {
 
         parent.camera.position.x += x_velocity;
         parent.camera.position.y += y_velocity;
+
+
+        if (onMovingPlatform) {//TODO
+            if (movingPlatform.currentDirection.equals("RIGHT")) {
+                parent.camera.position.x += 2;
+                rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
+                        sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
+                        sprite.getWidth(), sprite.getHeight());
+                objects = parent.getMapObjects(rect, objects, "platform");
+                if (!objects.isEmpty()) parent.camera.position.x -= 2;
+            }
+            else {
+                parent.camera.position.x -= 2;
+                rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
+                        sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
+                        sprite.getWidth(), sprite.getHeight());
+                objects = parent.getMapObjects(rect, objects, "platform");
+                if (!objects.isEmpty()) parent.camera.position.x += 2;
+            }
+        }
+
 
 
         if (parent.camera.position.y < -100) {
@@ -262,7 +306,7 @@ public class Player {
     public void findStart() {
         spawnLocation = new Rectangle();
         spawnLocation.set(0, 0, parent.MAP_WIDTH, parent.MAP_HEIGHT);
-        objects = parent.getTiles(spawnLocation, objects, "spawn");
+        objects = parent.getMapObjects(spawnLocation, objects, "spawn");
         spawnLocation.set(objects.first()); // 0
         spawnLocation.y += 1;
     }
