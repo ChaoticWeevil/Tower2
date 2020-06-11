@@ -66,7 +66,6 @@ public class Game implements Screen, InputProcessor {
         }
     };
     Boolean debug_mode;
-    Boolean test = false;
     Boolean loadingScreens = true;
     final Array<String> level_set = new Array<>();
     String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint", "Trigger"};
@@ -156,7 +155,9 @@ public class Game implements Screen, InputProcessor {
                     try {
                         if (object.getProperties().get("MovingPlatform", Boolean.class)) {
                             activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
-                            , object.getProperties().get("Axis", String.class), object.getProperties().get("Texture", String.class)));
+                            , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
+                            , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
+                            , object.getProperties().get("collisionHeight", float.class)));
                         }
                     } catch (NullPointerException ignored) {}
 
@@ -233,8 +234,11 @@ public class Game implements Screen, InputProcessor {
         renderer.render();
         batch.begin();
         for (MovingPlatform platform: movingPlatforms) {
-            batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH/2f,
-                    platform.currentY - camera.position.y + HEIGHT/2f);
+            for (int i = 1; i<=platform.numTextures; i++) {
+                batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH/2f + (i-1) * manager.get(platform.texture, Texture.class).getWidth(),
+                        platform.currentY - camera.position.y + HEIGHT/2f);
+            }
+
         }
 
 
@@ -372,7 +376,9 @@ public class Game implements Screen, InputProcessor {
                         try {
                             if (object.getProperties().get("MovingPlatform", Boolean.class)) {
                                 activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
-                                        , object.getProperties().get("axis", String.class), object.getProperties().get("texture", String.class)));
+                                        , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
+                                        , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
+                                        , object.getProperties().get("collisionHeight", float.class)));
                             }
                         } catch (NullPointerException ignored) {}
                         try {

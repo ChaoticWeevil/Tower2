@@ -266,19 +266,19 @@ public class Player {
 
         if (onMovingPlatform) {
             if (movingPlatform.currentDirection.equals("RIGHT")) {
-                parent.camera.position.x += 2;
+                parent.camera.position.x += (movingPlatform.speed * 2);
                 rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                         sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                         sprite.getWidth(), sprite.getHeight());
                 objects = parent.getMapObjects(rect, objects, "platform");
-                if (!objects.isEmpty()) parent.camera.position.x -= 2;
+                if (!objects.isEmpty()) parent.camera.position.x -= (movingPlatform.speed * 2);
             } else {
-                parent.camera.position.x -= 2;
+                parent.camera.position.x -= (movingPlatform.speed * 2);
                 rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                         sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                         sprite.getWidth(), sprite.getHeight());
                 objects = parent.getMapObjects(rect, objects, "platform");
-                if (!objects.isEmpty()) parent.camera.position.x += 2;
+                if (!objects.isEmpty()) parent.camera.position.x += (movingPlatform.speed * 2);
             }
         }
 

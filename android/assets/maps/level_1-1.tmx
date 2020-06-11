@@ -284,14 +284,17 @@
     <property name="SpawnPoint" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="207" x="910" y="1400" width="420" height="70">
+  <object id="207" x="820" y="1400" width="582" height="70">
    <properties>
     <property name="Active" type="bool" value="true"/>
     <property name="Axis" value="x"/>
     <property name="ID" type="int" value="1"/>
     <property name="MovingPlatform" type="bool" value="true"/>
-    <property name="Speed" type="int" value="1"/>
+    <property name="Speed" type="float" value="1"/>
     <property name="Texture" value="Textures/ers.png"/>
+    <property name="collisionHeight" type="float" value="70"/>
+    <property name="collisionWidth" type="float" value="70"/>
+    <property name="numTextures" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
