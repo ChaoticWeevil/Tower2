@@ -17,7 +17,9 @@ public class Player {
     final float DAMPING = 0.45f;
     final float AIR_DAMPING = 0.3f;
     final float GRAVITY = -0.2f;
-    public final float JUMP_SPEED = 7.8f;
+    public final float JUMP_SPEED = 8.5f;
+
+    float currentJumpAmount = 0;
 
     final int WALKING = 1;
     final int JUMPING = 2;
@@ -189,6 +191,7 @@ public class Player {
         if (!objects.isEmpty()) {
             grounded = true;
             y_velocity = 0;
+            currentJumpAmount = 0;
         }
         else {
             grounded = false;
@@ -266,19 +269,19 @@ public class Player {
 
         if (onMovingPlatform) {
             if (movingPlatform.currentDirection.equals("RIGHT")) {
-                parent.camera.position.x += (movingPlatform.speed * 2);
+                parent.camera.position.x += movingPlatform.playerSpeed ;
                 rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                         sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                         sprite.getWidth(), sprite.getHeight());
                 objects = parent.getMapObjects(rect, objects, "platform");
-                if (!objects.isEmpty()) parent.camera.position.x -= (movingPlatform.speed * 2);
+                if (!objects.isEmpty()) parent.camera.position.x -= movingPlatform.playerSpeed;
             } else {
-                parent.camera.position.x -= (movingPlatform.speed * 2);
+                parent.camera.position.x -= movingPlatform.playerSpeed;
                 rect.set(sprite.getX() + parent.camera.position.x - parent.WIDTH / 2f + x_velocity,
                         sprite.getY() + parent.camera.position.y - parent.HEIGHT / 2f,
                         sprite.getWidth(), sprite.getHeight());
                 objects = parent.getMapObjects(rect, objects, "platform");
-                if (!objects.isEmpty()) parent.camera.position.x += (movingPlatform.speed * 2);
+                if (!objects.isEmpty()) parent.camera.position.x += movingPlatform.playerSpeed;
             }
         }
 

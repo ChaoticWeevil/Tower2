@@ -1,5 +1,6 @@
 package com.tower.gameObjects;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.tower.Game;
 
@@ -16,12 +17,15 @@ public class MovingPlatform extends gameObject {
     public float speed;
     public Rectangle rect;
     public String currentDirection = "RIGHT";
+    MapObject object;
+    public float playerSpeed;
 
 
     public MovingPlatform(Game parent, float x, float y, float width, float height, int ID, String texture, float speed, int numTextures, float collisionWidth,
-                          float collisionHeight) {
+                          float collisionHeight, MapObject object) {
         this.parent = parent;
         this.numTextures = numTextures;
+        this.object = object;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -31,6 +35,14 @@ public class MovingPlatform extends gameObject {
         this.speed = speed;
         this.collisionWidth = collisionWidth;
         this.collisionHeight = collisionHeight;
+        try {
+            playerSpeed = object.getProperties().get("playerSpeed", float.class);
+            currentDirection = object.getProperties().get("direction", String.class);
+        }
+        catch (NullPointerException e) {
+            playerSpeed = speed * 2;
+
+        }
 
         currentX = x;
         currentY = y;
@@ -45,20 +57,26 @@ public class MovingPlatform extends gameObject {
 
     @Override
     public void update() {
-        if (currentDirection.equals("RIGHT")) {
-            if ((currentX + collisionWidth) < width + x) {
-                currentX += speed;
-            } else {
-                currentDirection = "LEFT";
+        if (speed == 0) {
+
+        }
+        else {
+            if (currentDirection.equals("RIGHT")) {
+                if ((currentX + collisionWidth) < width + x) {
+                    currentX += speed;
+                } else {
+                    currentDirection = "LEFT";
+                }
+            }
+            if (currentDirection.equals("LEFT")) {
+                if (currentX > x) {
+                    currentX -= speed;
+                } else {
+                    currentDirection = "RIGHT";
+                }
             }
         }
-        if (currentDirection.equals("LEFT")) {
-            if (currentX > x) {
-                currentX -= speed;
-            } else {
-                currentDirection = "RIGHT";
-            }
-        }
+
         updateRect();
     }
 }

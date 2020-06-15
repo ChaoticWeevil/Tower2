@@ -157,7 +157,7 @@ public class Game implements Screen, InputProcessor {
                             activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
                             , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
                             , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
-                            , object.getProperties().get("collisionHeight", float.class)));
+                            , object.getProperties().get("collisionHeight", float.class), object));
                         }
                     } catch (NullPointerException ignored) {}
 
@@ -378,7 +378,7 @@ public class Game implements Screen, InputProcessor {
                                 activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
                                         , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
                                         , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
-                                        , object.getProperties().get("collisionHeight", float.class)));
+                                        , object.getProperties().get("collisionHeight", float.class), object));
                             }
                         } catch (NullPointerException ignored) {}
                         try {
