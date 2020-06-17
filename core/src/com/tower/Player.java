@@ -102,7 +102,7 @@ public class Player {
         batch.draw(currentFrame, sprite.getX(), sprite.getY());
         for (gameObject o : overlappedObjects) {
             if (o.hasActivateMethod)
-                batch.draw(parent.manager.get("eKey.png", Texture.class), sprite.getX() + (sprite.getWidth() / 2f - 17), sprite.getY() + sprite.getHeight() + 10);
+                batch.draw(parent.manager.get("Textures/eKey.png", Texture.class), sprite.getX() + (sprite.getWidth() / 2f - 17), sprite.getY() + sprite.getHeight() + 10);
         }
     }
 

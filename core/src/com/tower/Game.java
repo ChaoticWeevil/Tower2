@@ -68,7 +68,7 @@ public class Game implements Screen, InputProcessor {
     Boolean debug_mode;
     Boolean loadingScreens = true;
     final Array<String> level_set = new Array<>();
-    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint", "Trigger"};
+    String[] gameObjects = {"Ladder", "Death", "Exit", "Fertilizer", "CarPart", "Switch", "SpawnPoint", "Trigger", "ToggleDeath"};
     public Array<MovingPlatform> movingPlatforms = new Array<>();
     final ArrayList<String> loadingMessages = new ArrayList<>();
     final Array<gameObject> activeObjects = new Array<>();
@@ -86,7 +86,7 @@ public class Game implements Screen, InputProcessor {
         }
         String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
                         "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
-                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "Textures/ers.png", "maps/Tiles/blankTile.png", "textures/eKey.png",
+                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "Textures/ers.png", "maps/Tiles/blankTile.png", "Textures/eKey.png",
                         "Textures/player/jump-5.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
@@ -160,6 +160,14 @@ public class Game implements Screen, InputProcessor {
                             , object.getProperties().get("collisionHeight", float.class), object));
                         }
                     } catch (NullPointerException ignored) {}
+                    try {
+                        if (object.getProperties().get("ToggleDeath", Boolean.class)) {
+                            activeObjects.add(new ToggleDeath(this, rect.x, rect.y, rect.width, rect.height, object,
+                                    object.getProperties().get("control", String.class)));
+                        }
+
+                    } catch (NullPointerException ignored) {
+                    }
 
                     if (object.getProperties().get("OrGate", Boolean.class)) {
                         activeObjects.add(new OrGate(this, rect.x, rect.y, rect.width, rect.height));
@@ -266,10 +274,6 @@ public class Game implements Screen, InputProcessor {
         debugRenderer.begin();
         debugRenderer.setColor(Color.WHITE);
         debugRenderer.rect(player.sprite.getX(), player.sprite.getY(), player.sprite.getWidth(), player.sprite.getHeight());
-        movingPlatforms.first().updateRect();
-        Rectangle r = movingPlatforms.first().rect;
-        debugRenderer.setColor(Color.RED);
-        debugRenderer.rect(r.x - camera.position.x + WIDTH/2f, r.y - camera.position.y + HEIGHT/2f, r.width, r.height);
         debugRenderer.end();
         batch.begin();
     }
@@ -392,8 +396,11 @@ public class Game implements Screen, InputProcessor {
                             }
                         } catch (NullPointerException ignored) {
                         }
-
-
+                        try {
+                            if (object.getProperties().get("ToggleDeath", Boolean.class))
+                                activeObjects.add(new ToggleDeath(this, rect.x, rect.y, rect.width, rect.height, object, object.getProperties().get("control", String.class)));
+                        } catch (NullPointerException ignored) {
+                        }
                         if (object.getProperties().get("OrGate", Boolean.class)) {
                             activeObjects.add(new OrGate(this, rect.x, rect.y, rect.width, rect.height));
                         }
