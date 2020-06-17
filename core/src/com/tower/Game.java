@@ -85,9 +85,9 @@ public class Game implements Screen, InputProcessor {
             manager.load(this.level_set.get(i), TiledMap.class);
         }
         String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
-                        "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
-                        "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "Textures/ers.png", "maps/Tiles/blankTile.png", "Textures/eKey.png",
-                        "Textures/player/jump-5.png"};
+                "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
+                "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "Textures/ers.png", "maps/Tiles/blankTile.png", "textures/eKey.png",
+                "Textures/player/jump-5.png", "Textures/cGate.png", "Textures/eKey.png", "Textures/sawGIF.gif","Textures/oil.png", "Textures/sawGIF2.gif"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
