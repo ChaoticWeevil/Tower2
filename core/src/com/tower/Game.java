@@ -448,8 +448,16 @@ public class Game implements Screen, InputProcessor {
     // Unused Methods
     @Override
     public void dispose() {
+        Timer.instance().clear();
         // Free resources
         manager.dispose();
+        batch.dispose();
+        debugRenderer.dispose();
+        console.dispose();
+        map.dispose();
+        renderer.dispose();
+        stage.dispose();
+        font.dispose();
     }
 
     @Override

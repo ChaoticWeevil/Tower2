@@ -27,7 +27,6 @@ public class ToggleDeath extends gameObject {
         } catch (Exception ignored) {
             period = 1;
         }
-        System.out.println(period);
     }
 
     @Override
