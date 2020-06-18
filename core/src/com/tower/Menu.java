@@ -74,7 +74,7 @@ public class Menu implements Screen {
         title2.setPosition(SCREEN_WIDTH / 2f - title.getWidth() - 75, SCREEN_HEIGHT * 3 / 4f);
         continue_game.setPosition(SCREEN_WIDTH / 2f - play.getWidth() / 2, SCREEN_HEIGHT / 2f);
         new_game.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 100);
-        back.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 200);
+        back.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 300);
 
         play_stage.addActor(title2);
         play_stage.addActor(new_game);
@@ -131,7 +131,7 @@ public class Menu implements Screen {
                     parent.game.dispose();
 
                 } catch (NullPointerException ignored) {}
-                parent.game = new Game(parent, parent.level_set_1);
+                parent.game = new Game(parent, parent.level_set_1, false);
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);
 
@@ -144,6 +144,24 @@ public class Menu implements Screen {
                 Gdx.input.setInputProcessor(main_stage);
             }
         });
+
+        TextButton hardcoreButton = new TextButton("Hardcore Game", skin);
+        hardcoreButton.setSize(SCREEN_WIDTH / 5f, SCREEN_HEIGHT / 8f);
+        hardcoreButton.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2, SCREEN_HEIGHT / 2f - 200);
+        hardcoreButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    parent.game.dispose();
+
+                } catch (NullPointerException ignored) {}
+                parent.game = new Game(parent, parent.level_set_1, true);
+                parent.change_screen(parent.game);
+                continue_game.setVisible(true);
+            }
+        });
+        play_stage.addActor(hardcoreButton);
+        
     }
 
     @Override

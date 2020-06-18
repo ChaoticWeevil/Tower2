@@ -75,9 +75,11 @@ public class Game implements Screen, InputProcessor {
     int MAP_HEIGHT;
     int MAP_WIDTH;
     final Console console = new GUIConsole();
+    boolean hardcore;
 
-    public Game(final Main parent, String[] level_set) {
+    public Game(final Main parent, String[] level_set, boolean hardcore) {
         this.parent = parent;
+        this.hardcore = hardcore;
         // Asset loading
         manager.setLoader(TiledMap.class, new TmxMapLoader());
         for (int i = 0; i < level_set.length; i++) {

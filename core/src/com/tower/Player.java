@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.tower.gameObjects.*;
 
 public class Player {
@@ -293,10 +294,20 @@ public class Player {
 
 
     public void respawn() {
-        currentLevelDeaths++;
-        parent.camera.position.x = spawnLocation.x;
-        parent.camera.position.y = spawnLocation.y;
-        x_velocity = y_velocity = 0;
+        if (parent.hardcore) {
+            Timer.instance().clear();
+            parent.parent.menu.continue_game.setVisible(false);
+            parent.parent.menu.stage = parent.parent.menu.death_stage;
+            Gdx.input.setInputProcessor(parent.parent.menu.death_stage);
+            parent.console.resetInputProcessing();
+            parent.parent.change_screen(parent.parent.menu);
+        }
+        else {
+            currentLevelDeaths++;
+            parent.camera.position.x = spawnLocation.x;
+            parent.camera.position.y = spawnLocation.y;
+            x_velocity = y_velocity = 0;
+        }
     }
 
     public void spawn() {
