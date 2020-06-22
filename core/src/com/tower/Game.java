@@ -46,6 +46,7 @@ public class Game implements Screen, InputProcessor {
     public final int WIDTH = 1366;
     public final int HEIGHT = 768;
     public final int MAX_SCORE = 900;
+    public int deathCounter = 0;
     public TiledMap map;
     public final AssetManager manager = new AssetManager();
     public Player player;
@@ -76,10 +77,14 @@ public class Game implements Screen, InputProcessor {
     int MAP_WIDTH;
     final Console console = new GUIConsole();
     boolean hardcore;
+    boolean timeTrial;
+    float timeTrialTime = 0;
 
-    public Game(final Main parent, String[] level_set, boolean hardcore) {
+    public Game(final Main parent, String[] level_set, boolean hardcore, boolean timeTrial) {
+        System.out.println(timeTrial);
         this.parent = parent;
         this.hardcore = hardcore;
+        this.timeTrial = timeTrial;
         // Asset loading
         manager.setLoader(TiledMap.class, new TmxMapLoader());
         for (int i = 0; i < level_set.length; i++) {
@@ -231,6 +236,7 @@ public class Game implements Screen, InputProcessor {
         camera.update();
         for (gameObject o : activeObjects) o.update();
         for (MovingPlatform p : movingPlatforms) p.update();
+        timeTrialTime += 0.01f;
 
     }
 
@@ -282,6 +288,8 @@ public class Game implements Screen, InputProcessor {
 
     public void renderHud(SpriteBatch batch) {
         font.draw(batch, "Tree Growth: " + (int) ((float) player.score / MAX_SCORE * 100) + "%", WIDTH / 2f - 40, HEIGHT - 10);
+        font.draw(batch, "Deaths: " + deathCounter, 1270, 760);
+        if (timeTrial) font.draw(batch, "Time: " + Math.round(timeTrialTime * 10) / 10f, 1270, 740);
         batch.end();
         stage.act();
         stage.draw();
@@ -417,7 +425,10 @@ public class Game implements Screen, InputProcessor {
                 } catch (NullPointerException ignored) {
                 }
             }
-            if (loadingScreens) parent.change_screen(new fakeLoadingScreen(this));
+            if (loadingScreens) {
+                Timer.instance().clear();
+                parent.change_screen(new fakeLoadingScreen(this));
+            }
         } else wonGame();
     }
 
@@ -430,7 +441,7 @@ public class Game implements Screen, InputProcessor {
             }
         };
         Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " + (int) ((float) player.score / MAX_SCORE * 100) + "%"
-                + ".\nYou collected " + player.carPartsFound + " electric car parts.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+                + ".\nYou collected " + player.carPartsFound + " electric car parts.\nYou died " + deathCounter + "times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         d.getContentTable().align(Align.center);
         d.align(Align.topLeft);
         text.setAlignment(Align.center);

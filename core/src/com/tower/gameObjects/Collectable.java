@@ -38,7 +38,7 @@ public class Collectable extends gameObject {
                 d.align(Align.center);
             }
             d.setY(parent.HEIGHT - 85);
-            d.setX(parent.WIDTH - 365);
+            d.setX(5);
             d.setWidth(350);
             d.setHeight(75);
             parent.stage.addActor(d);

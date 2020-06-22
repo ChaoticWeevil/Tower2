@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -60,6 +61,7 @@ public class Menu implements Screen {
         main_stage.addActor(exit);
 
         // Play Stage
+        final CheckBox timeCheckbox = new CheckBox("Time Trial", skin);
         Label title2 = new Label("The Tower", skin);
         new_game = new TextButton("New Game", skin);
         continue_game = new TextButton("Continue Game", skin);
@@ -131,7 +133,7 @@ public class Menu implements Screen {
                     parent.game.dispose();
 
                 } catch (NullPointerException ignored) {}
-                parent.game = new Game(parent, parent.level_set_1, false);
+                parent.game = new Game(parent, parent.level_set_1, false, timeCheckbox.isChecked());
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);
 
@@ -155,12 +157,16 @@ public class Menu implements Screen {
                     parent.game.dispose();
 
                 } catch (NullPointerException ignored) {}
-                parent.game = new Game(parent, parent.level_set_1, true);
+                parent.game = new Game(parent, parent.level_set_1, true, timeCheckbox.isChecked());
                 parent.change_screen(parent.game);
                 continue_game.setVisible(true);
             }
         });
         play_stage.addActor(hardcoreButton);
+
+
+        timeCheckbox.setPosition(SCREEN_WIDTH / 2f - exit.getWidth() / 2 + 270, SCREEN_HEIGHT / 2f - 160);
+        play_stage.addActor(timeCheckbox);
         
     }
 

@@ -294,6 +294,7 @@ public class Player {
 
 
     public void respawn() {
+        parent.deathCounter ++;
         if (parent.hardcore) {
             Timer.instance().clear();
             parent.parent.menu.continue_game.setVisible(false);
