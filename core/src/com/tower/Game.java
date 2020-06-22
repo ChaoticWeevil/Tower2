@@ -81,7 +81,6 @@ public class Game implements Screen, InputProcessor {
     float timeTrialTime = 0;
 
     public Game(final Main parent, String[] level_set, boolean hardcore, boolean timeTrial) {
-        System.out.println(timeTrial);
         this.parent = parent;
         this.hardcore = hardcore;
         this.timeTrial = timeTrial;
