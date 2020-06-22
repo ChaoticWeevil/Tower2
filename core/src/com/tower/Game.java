@@ -439,6 +439,30 @@ public class Game implements Screen, InputProcessor {
 
             }
         };
+        final Dialog d1 = new Dialog("Summary", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))) {
+            public void result(Object obj) {
+                d.setVisible(true);
+            }
+        };
+        d1.toFront();
+        Label text1;
+        if (timeTrial){
+            text1 = new Label("You completed the game dying " + deathCounter + " times with a time of " + Math.round(timeTrialTime * 10) / 10f + " seconds.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+        }
+        else {
+            text1 = new Label("You completed the game dying " + deathCounter + " times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+        }
+
+        d1.getContentTable().align(Align.center);
+        d1.align(Align.topLeft);
+        text1.setAlignment(Align.center);
+        d1.text(text1);
+        d1.button("Continue");
+        d1.setY(550);
+        d1.setX(450);
+        d1.setWidth(466);
+        d1.setHeight(168);
+
         Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " + (int) ((float) player.score / MAX_SCORE * 100) + "%"
                 + ".\nYou collected " + player.carPartsFound + " electric car parts.\nYou died " + deathCounter + "times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         d.getContentTable().align(Align.center);
@@ -450,12 +474,17 @@ public class Game implements Screen, InputProcessor {
         d.setX(450);
         d.setWidth(466);
         d.setHeight(168);
+
         stage.addActor(d);
+        stage.addActor(d1);
+
         Gdx.input.setInputProcessor(stage);
         console.resetInputProcessing();
         player.y_velocity = player.x_velocity = 0;
         player.right = player.left = player.jumping = false;
     }
+
+
 
     // Unused Methods
     @Override
