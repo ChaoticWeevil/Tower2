@@ -61,7 +61,7 @@ public class Menu implements Screen {
         main_stage.addActor(exit);
 
         // Play Stage
-        final CheckBox timeCheckbox = new CheckBox("Time Trial", skin);
+        final CheckBox timeCheckbox = new CheckBox(" Time Trial", skin);
         Label title2 = new Label("The Tower", skin);
         new_game = new TextButton("New Game", skin);
         continue_game = new TextButton("Continue Game", skin);

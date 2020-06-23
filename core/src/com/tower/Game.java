@@ -193,22 +193,23 @@ public class Game implements Screen, InputProcessor {
         console.setCommandExecutor(new consoleCommands(this));
         console.setDisplayKeyID(Input.Keys.GRAVE);
 
-        // Starts the game by running update method
-        Timer.schedule(new Timer.Task() {
-                           @Override
-                           public void run() {
-                               update();
-                           }
-                       }
-                , 0.1f
-                , 0.01f
-        );
+
         // Tutorial Popup Window
         final Dialog d = new Dialog("Tutorial", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json"))) {
             public void result(Object obj) {
                 stage.clear();
                 Gdx.input.setInputProcessor(parent.game);
                 console.resetInputProcessing();
+                // Starts the game by running update method
+                Timer.schedule(new Timer.Task() {
+                                   @Override
+                                   public void run() {
+                                       update();
+                                   }
+                               }
+                        , 0.1f
+                        , 0.01f
+                );
 
             }
         };
@@ -227,6 +228,7 @@ public class Game implements Screen, InputProcessor {
         stage.addActor(d);
         Gdx.input.setInputProcessor(stage);
         console.resetInputProcessing();
+        update();
     }
 
     // Runs 100 times per second
