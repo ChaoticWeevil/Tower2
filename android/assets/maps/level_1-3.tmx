@@ -450,7 +450,7 @@
     <property name="platform" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="251" x="3252" y="984.333" width="2491" height="59.333">
+  <object id="251" x="3259.33" y="984.333" width="2483.67" height="59.333">
    <properties>
     <property name="platform" type="bool" value="true"/>
    </properties>
@@ -561,7 +561,7 @@
     <property name="platform" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="274" name="Death Water" x="2412.57" y="982.775" width="834.524" height="33.7837">
+  <object id="274" name="Death Water" x="2412.57" y="982.775" width="844.191" height="33.7837">
    <properties>
     <property name="Death" type="bool" value="true"/>
     <property name="platform" type="bool" value="false"/>
