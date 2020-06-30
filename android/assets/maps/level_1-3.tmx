@@ -16,10 +16,10 @@
    <image width="70" height="70" source="tiles/checkpoint.png"/>
   </tile>
   <tile id="9">
-   <image width="200" height="200" source="tiles/sawGIF.gif"/>
+   <image width="200" height="200" source="tiles/sawGIF2.gif"/>
    <animation>
     <frame tileid="9" duration="75"/>
-    <frame tileid="12" duration="75"/>
+    <frame tileid="12" duration="100"/>
    </animation>
   </tile>
   <tile id="12">
