@@ -41,7 +41,7 @@ public class ToggleDeath extends gameObject {
             if (ID == 1) {
                 object.getProperties().put("Death", false);
                 ((TiledMapTileLayer) parent.map.getLayers().get("Things")).getCell((int) x / 70, (int) y / 70).getTile()
-                        .setTextureRegion(new TextureRegion(parent.manager.get("maps/Tiles/blankTile.png", Texture.class)));
+                        .setTextureRegion(new TextureRegion(parent.manager.get("maps/tiles/blankTile.png", Texture.class)));
             } else {
                 object.getProperties().put("Death", true);
                 ((TiledMapTileLayer) parent.map.getLayers().get("Things")).getCell((int) x / 70, (int) y / 70).getTile()

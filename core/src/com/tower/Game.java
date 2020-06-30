@@ -90,10 +90,10 @@ public class Game implements Screen, InputProcessor {
             this.level_set.add("maps/" + level_set[i]);
             manager.load(this.level_set.get(i), TiledMap.class);
         }
-        String[] art = {"textures/player/p_right.png", "textures/player/p_left.png", "maps/tiles/carPart.png", "textures/Trees/Tree1.png",
-                "textures/Trees/Tree2.png", "textures/Trees/Tree3.png", "textures/Trees/Tree4.png", "textures/Trees/Tree5.png", "textures/Trees/Tree6.png",
-                "maps/tiles/switchRight.png", "maps/tiles/switchLeft.png", "Textures/ers.png", "maps/Tiles/blankTile.png", "textures/eKey.png",
-                "Textures/player/jump-5.png", "Textures/cGate.png", "Textures/eKey.png", "Textures/sawGIF.gif","Textures/oil.png", "Textures/sawGIF2.gif"};
+        String[] art = {"maps/tiles/carPart.png", "Textures/Trees/Tree1.png", "Textures/oil.png",
+                "Textures/Trees/Tree2.png", "Textures/Trees/Tree3.png", "Textures/Trees/Tree4.png", "Textures/Trees/Tree5.png", "Textures/Trees/Tree6.png",
+                "Textures/ers.png", "maps/tiles/blankTile.png", "Textures/eKey.png",
+                "Textures/player/jump-5.png", "Textures/cGate.png", "Textures/eKey.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }
@@ -484,6 +484,7 @@ public class Game implements Screen, InputProcessor {
         console.resetInputProcessing();
         player.y_velocity = player.x_velocity = 0;
         player.right = player.left = player.jumping = false;
+        Timer.instance().clear();
     }
 
 

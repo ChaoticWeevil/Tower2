@@ -4,35 +4,35 @@
  <tileset firstgid="157" name="tiles" tilewidth="200" tileheight="200" tilecount="9" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
-   <image width="70" height="70" source="Tiles/bg_blue.PNG"/>
+   <image width="70" height="70" source="tiles/bg_blue.PNG"/>
   </tile>
   <tile id="1">
-   <image width="70" height="70" source="Tiles/carPart.png"/>
+   <image width="70" height="70" source="tiles/carPart.png"/>
   </tile>
   <tile id="2">
-   <image width="70" height="70" source="Tiles/fertilizer.png"/>
+   <image width="70" height="70" source="tiles/fertilizer.png"/>
   </tile>
   <tile id="3">
-   <image width="70" height="70" source="Tiles/ checkpoint.png"/>
+   <image width="70" height="70" source="tiles/checkpoint.png"/>
   </tile>
   <tile id="9">
-   <image width="200" height="200" source="../Textures/sawGIF.gif"/>
+   <image width="200" height="200" source="tiles/sawGIF.gif"/>
    <animation>
     <frame tileid="9" duration="75"/>
     <frame tileid="12" duration="75"/>
    </animation>
   </tile>
   <tile id="12">
-   <image width="200" height="200" source="../Textures/sawGIF2.gif"/>
+   <image width="200" height="200" source="tiles/sawGIF2.gif"/>
   </tile>
   <tile id="16">
-   <image width="18" height="70" source="../Textures/oil.png"/>
+   <image width="18" height="70" source="tiles/oil.png"/>
   </tile>
   <tile id="18">
-   <image width="70" height="70" source="../Textures/wireC.png"/>
+   <image width="70" height="70" source="tiles/wireC.png"/>
   </tile>
   <tile id="20">
-   <image width="70" height="70" source="../Textures/wire.png"/>
+   <image width="70" height="70" source="tiles/wire.png"/>
   </tile>
  </tileset>
  <tileset firstgid="178" source="Tilesets/industrial.tsx"/>
@@ -561,7 +561,7 @@
     <property name="platform" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="274" name="Death Water" x="2412.57" y="982.775" width="834.524" height="33.7837">
+  <object id="274" name="Death Water" x="2412.57" y="980.009" width="834.524" height="36.5493">
    <properties>
     <property name="Death" type="bool" value="true"/>
     <property name="platform" type="bool" value="false"/>

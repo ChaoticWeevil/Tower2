@@ -33,12 +33,10 @@ public class Player {
 
 
     private final Game parent;
-    Sprite sprite;
+    Rectangle sprite;
     boolean left;
     boolean right;
     boolean jumping;
-    Texture p_left;
-    Texture p_right;
     public float y_velocity = 0;
     float x_velocity;
     boolean grounded = false;
@@ -60,12 +58,8 @@ public class Player {
     public int currentLevelDeaths = 0;
 
     public Player(Game parent) {
+        sprite = new Rectangle(parent.WIDTH/2f, parent.HEIGHT/2f, 50, 100);
         this.parent = parent;
-        p_left = parent.manager.get("textures/player/p_left.png", Texture.class);
-        p_right = parent.manager.get("textures/player/p_right.png", Texture.class);
-        sprite = new Sprite(p_right);
-        sprite.setX(parent.WIDTH / 2f);
-        sprite.setY(parent.HEIGHT / 2f);
 
         TextureAtlas atlas = new TextureAtlas("Textures/player/walkAnimation/walk.atlas");
 

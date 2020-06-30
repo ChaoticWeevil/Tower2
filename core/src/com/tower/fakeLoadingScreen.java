@@ -31,12 +31,12 @@ public class fakeLoadingScreen implements Screen {
 
     fakeLoadingScreen(final Game parent) {
         final int maxScore = 900;
-        if (parent.player.score >= maxScore) t = parent.manager.get("textures/Trees/Tree6.png", Texture.class);
-        else if (parent.player.score >= 700) t = parent.manager.get("textures/Trees/Tree5.png", Texture.class);
-        else if (parent.player.score >= 500) t = parent.manager.get("textures/Trees/Tree4.png", Texture.class);
-        else if (parent.player.score >= 300) t = parent.manager.get("textures/Trees/Tree3.png", Texture.class);
-        else if (parent.player.score >= 200) t = parent.manager.get("textures/Trees/Tree2.png", Texture.class);
-        else                                 t = parent.manager.get("textures/Trees/Tree1.png", Texture.class);
+        if (parent.player.score >= maxScore) t = parent.manager.get("Textures/Trees/Tree6.png", Texture.class);
+        else if (parent.player.score >= 700) t = parent.manager.get("Textures/Trees/Tree5.png", Texture.class);
+        else if (parent.player.score >= 500) t = parent.manager.get("Textures/Trees/Tree4.png", Texture.class);
+        else if (parent.player.score >= 300) t = parent.manager.get("Textures/Trees/Tree3.png", Texture.class);
+        else if (parent.player.score >= 200) t = parent.manager.get("Textures/Trees/Tree2.png", Texture.class);
+        else                                 t = parent.manager.get("Textures/Trees/Tree1.png", Texture.class);
 
         this.parent = parent;
         stage.setViewport(parent.viewport);
