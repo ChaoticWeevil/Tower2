@@ -451,6 +451,7 @@
     <property name="Gate" type="bool" value="true"/>
     <property name="ID" type="int" value="1"/>
     <property name="Texture" value="Textures/cGate.png"/>
+    <property name="offTexture" value="Textures/cGateOff.png"/>
     <property name="platform" type="bool" value="false"/>
    </properties>
   </object>
@@ -809,6 +810,7 @@
     <property name="Gate" type="bool" value="true"/>
     <property name="ID" type="int" value="3"/>
     <property name="Texture" value="Textures/cGate.png"/>
+    <property name="offTexture" value="Textures/cGateOff.png"/>
     <property name="platform" type="bool" value="false"/>
    </properties>
   </object>

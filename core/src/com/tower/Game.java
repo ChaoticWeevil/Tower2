@@ -93,7 +93,7 @@ public class Game implements Screen, InputProcessor {
         String[] art = {"maps/tiles/carPart.png", "Textures/Trees/Tree1.png", "Textures/oil.png",
                 "Textures/Trees/Tree2.png", "Textures/Trees/Tree3.png", "Textures/Trees/Tree4.png", "Textures/Trees/Tree5.png", "Textures/Trees/Tree6.png",
                 "Textures/ers.png", "maps/tiles/blankTile.png", "Textures/eKey.png",
-                "Textures/player/jump-5.png", "Textures/cGate.png", "Textures/eKey.png"};
+                "Textures/player/jump-5.png", "Textures/cGate.png", "Textures/eKey.png", "Textures/cGateOff.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
         }

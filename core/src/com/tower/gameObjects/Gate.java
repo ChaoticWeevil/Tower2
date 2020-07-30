@@ -23,6 +23,7 @@ public class Gate extends gameObject {
 
     @Override
     public void update() {
+        String offTexture;
         MapLayer layer = parent.map.getLayers().get("Collision_Layer");
         MapObjects objects = layer.getObjects();
         for (MapObject object : objects) {
@@ -30,14 +31,23 @@ public class Gate extends gameObject {
             int ID;
             if (rectangle.x == x && rectangle.y == y) {
                 try {
-                    ID = parent.signals.get(object.getProperties().get("ID"));
+                    ID = parent.signals.get(object.getProperties().get("ID", Integer.class));
                 } catch (Exception ignored) {
                     ID = 0;
                 }
+                try {
+                    offTexture = object.getProperties().get("offTexture", String.class);
+                } catch (Exception ignored) {
+                    offTexture = "maps/tiles/blankTile.png";
+                }
+                if (offTexture == null) {
+                    offTexture = "maps/tiles/blankTile.png";
+                }
+
                 if (ID == 1) {
                     object.getProperties().put("platform", false);
                     ((TiledMapTileLayer) parent.map.getLayers().get("Things")).getCell((int)x/70, (int)y/70).getTile()
-                            .setTextureRegion(new TextureRegion(parent.manager.get("maps/tiles/blankTile.png", Texture.class)));
+                            .setTextureRegion(new TextureRegion(parent.manager.get(offTexture, Texture.class)));
                 }
                 else {
                     object.getProperties().put("platform", true);
