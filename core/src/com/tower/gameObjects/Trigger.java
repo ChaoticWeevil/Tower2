@@ -23,7 +23,16 @@ public class Trigger extends gameObject {
         for (MapObject object : parent.map.getLayers().get("Collision_Layer").getObjects()) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             if (rectangle.x == x && rectangle.y == y) {
-                parent.signals.put((Integer) object.getProperties().get("ID"), object.getProperties().get("Value", Integer.class));
+                int value = object.getProperties().get("Value", Integer.class);
+                int id = object.getProperties().get("ID", Integer.class);
+                try {
+                    parent.map.getLayers().get("ID " + id).setVisible(value == 1);
+                }
+                catch (Exception e) {
+                    System.out.println(e);
+                }
+
+                parent.signals.put(id, value);
             }
         }
     }
