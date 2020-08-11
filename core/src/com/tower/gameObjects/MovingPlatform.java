@@ -49,6 +49,7 @@ public class MovingPlatform extends gameObject {
 
         rect = new com.badlogic.gdx.math.Rectangle(currentX, currentY, collisionWidth, collisionHeight);
         parent.movingPlatforms.add(this);
+
     }
 
     public void updateRect() {

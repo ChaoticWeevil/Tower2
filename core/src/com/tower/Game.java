@@ -91,9 +91,9 @@ public class Game implements Screen, InputProcessor {
             manager.load(this.level_set.get(i), TiledMap.class);
         }
 
-        String[] art = {"maps/tiles/carPart.png", "Textures/Trees/Tree1.png", "Textures/oil.png",
+        String[] art = {"maps/tiles/carPart.png", "Textures/Trees/Tree1.png", "Textures/laser.png",
                 "Textures/Trees/Tree2.png", "Textures/Trees/Tree3.png", "Textures/Trees/Tree4.png", "Textures/Trees/Tree5.png", "Textures/Trees/Tree6.png",
-                "Textures/ers.png", "maps/tiles/blankTile.png", "Textures/eKey.png",
+                "Textures/ers.png", "maps/tiles/blankTile.png", "Textures/eKey.png", "maps/Tiles/blankTile.png", "Textures/oil.png",
                 "Textures/player/jump-5.png", "Textures/cGate.png", "Textures/eKey.png", "Textures/cGateOff.png"};
         for (String a : art) {
             manager.load(a, Texture.class);
@@ -128,14 +128,13 @@ public class Game implements Screen, InputProcessor {
 
         // Add active map objects to array
         MapObjects objects = map.getLayers().get("Collision_Layer").getObjects();
-        for (int num = 0; num<10; num++) {
+        for (int num = 0; num < 10; num++) {
             Iterator<String> iterator = map.getProperties().getKeys();
             while (iterator.hasNext()) {
                 int mapNum;
                 try {
                     mapNum = Integer.parseInt(iterator.next());
-                }
-                catch (Exception ignored){
+                } catch (Exception ignored) {
                     continue;
                 }
                 if (mapNum == num) {
@@ -162,11 +161,12 @@ public class Game implements Screen, InputProcessor {
                     try {
                         if (object.getProperties().get("MovingPlatform", Boolean.class)) {
                             activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
-                            , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
-                            , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
-                            , object.getProperties().get("collisionHeight", float.class), object));
+                                    , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
+                                    , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
+                                    , object.getProperties().get("collisionHeight", float.class), object));
                         }
-                    } catch (NullPointerException ignored) {}
+                    } catch (NullPointerException ignored) {
+                    }
                     try {
                         if (object.getProperties().get("ToggleDeath", Boolean.class)) {
                             activeObjects.add(new ToggleDeath(this, rect.x, rect.y, rect.width, rect.height, object,
@@ -251,10 +251,12 @@ public class Game implements Screen, InputProcessor {
         renderer.setView(camera);
         renderer.render();
         batch.begin();
-        for (MovingPlatform platform: movingPlatforms) {
-            for (int i = 1; i<=platform.numTextures; i++) {
-                batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH/2f + (i-1) * manager.get(platform.texture, Texture.class).getWidth(),
-                        platform.currentY - camera.position.y + HEIGHT/2f);
+        for (MovingPlatform platform : movingPlatforms) {
+            for (int i = 1; i <= platform.numTextures; i++) {
+                if (!platform.texture.equals("NONE")) {
+                    batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH / 2f + (i - 1) * manager.get(platform.texture, Texture.class).getWidth(),
+                            platform.currentY - camera.position.y + HEIGHT / 2f);
+                }
             }
 
         }
@@ -348,7 +350,7 @@ public class Game implements Screen, InputProcessor {
         for (MapObject object : objects) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             try {
-                if (rect.overlaps(rectangle) && (check.equals("none") || (Boolean) object.getProperties().get(check))) {
+                if (rect.overlaps(rectangle) && (check.equals("none") || object.getProperties().get(check, Boolean.class))) {
                     tiles.add(rectangle);
                 }
             } catch (NullPointerException ignored) {
@@ -357,10 +359,10 @@ public class Game implements Screen, InputProcessor {
         }
         return tiles;
     }
-    
+
     public Array<MovingPlatform> getMovingPlatforms(Rectangle rect, Array<MovingPlatform> tiles) {
         tiles.clear();
-        for (MovingPlatform p: movingPlatforms) {
+        for (MovingPlatform p : movingPlatforms) {
             p.updateRect();
             if (rect.overlaps(p.rect) || p.rect.overlaps(rect)) {
                 tiles.add(p);
@@ -396,7 +398,8 @@ public class Game implements Screen, InputProcessor {
                                         , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
                                         , object.getProperties().get("collisionHeight", float.class), object));
                             }
-                        } catch (NullPointerException ignored) {}
+                        } catch (NullPointerException ignored) {
+                        }
                         try {
                             if (object.getProperties().get("Gate", Boolean.class))
                                 activeObjects.add(new Gate(this, rect.x, rect.y, rect.width, rect.height));
@@ -449,10 +452,9 @@ public class Game implements Screen, InputProcessor {
         };
         d1.toFront();
         Label text1;
-        if (timeTrial){
+        if (timeTrial) {
             text1 = new Label("You completed the game dying " + deathCounter + " times with a time of " + Math.round(timeTrialTime * 10) / 10f + " seconds.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
-        }
-        else {
+        } else {
             text1 = new Label("You completed the game dying " + deathCounter + " times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         }
 
@@ -487,7 +489,6 @@ public class Game implements Screen, InputProcessor {
         player.right = player.left = player.jumping = false;
         Timer.instance().clear();
     }
-
 
 
     // Unused Methods
