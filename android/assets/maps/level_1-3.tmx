@@ -4,38 +4,38 @@
  <tileset firstgid="157" name="tiles" tilewidth="200" tileheight="200" tilecount="10" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
-   <image width="70" height="70" source="Tiles/bg_blue.PNG"/>
+   <image width="70" height="70" source="tiles/bg_blue.PNG"/>
   </tile>
   <tile id="1">
-   <image width="70" height="70" source="Tiles/carPart.png"/>
+   <image width="70" height="70" source="tiles/carPart.png"/>
   </tile>
   <tile id="2">
-   <image width="70" height="70" source="Tiles/fertilizer.png"/>
+   <image width="70" height="70" source="tiles/fertilizer.png"/>
   </tile>
   <tile id="3">
-   <image width="70" height="70" source="Tiles/checkpoint.png"/>
+   <image width="70" height="70" source="tiles/checkpoint.png"/>
   </tile>
   <tile id="9">
-   <image width="200" height="200" source="Tiles/sawGIF.gif"/>
+   <image width="200" height="200" source="tiles/sawGIF.gif"/>
    <animation>
     <frame tileid="9" duration="75"/>
     <frame tileid="12" duration="75"/>
    </animation>
   </tile>
   <tile id="12">
-   <image width="200" height="200" source="Tiles/sawGIF2.gif"/>
+   <image width="200" height="200" source="tiles/sawGIF2.gif"/>
   </tile>
   <tile id="16">
    <image width="18" height="70" source="../Textures/laser.png"/>
   </tile>
   <tile id="18">
-   <image width="70" height="70" source="Tiles/wireC.png"/>
+   <image width="70" height="70" source="tiles/wireC.png"/>
   </tile>
   <tile id="20">
-   <image width="70" height="70" source="Tiles/wire.png"/>
+   <image width="70" height="70" source="tiles/wire.png"/>
   </tile>
   <tile id="21">
-   <image width="70" height="70" source="Tiles/wireGreen.png"/>
+   <image width="70" height="70" source="tiles/wireGreen.png"/>
   </tile>
  </tileset>
  <tileset firstgid="179" source="Tilesets/industrial.tsx"/>
