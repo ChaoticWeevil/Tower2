@@ -58,10 +58,7 @@ public class MovingPlatform extends gameObject {
 
     @Override
     public void update() {
-        if (speed == 0) {
-
-        }
-        else {
+        if (speed != 0) {
             if (currentDirection.equals("RIGHT")) {
                 if ((currentX + collisionWidth) < width + x) {
                     currentX += speed;

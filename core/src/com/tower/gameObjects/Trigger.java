@@ -28,8 +28,7 @@ public class Trigger extends gameObject {
                 try {
                     parent.map.getLayers().get("ID " + id).setVisible(value == 1);
                 }
-                catch (Exception e) {
-                    System.out.println(e);
+                catch (Exception ignored) {
                 }
 
                 parent.signals.put(id, value);

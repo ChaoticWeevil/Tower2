@@ -160,7 +160,8 @@ public class Game implements Screen, InputProcessor {
                     }
                     try {
                         if (object.getProperties().get("MovingPlatform", Boolean.class)) {
-                            activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
+                            activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height
+                                    , object.getProperties().get("ID", Integer.class)
                                     , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
                                     , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
                                     , object.getProperties().get("collisionHeight", float.class), object));
@@ -214,9 +215,10 @@ public class Game implements Screen, InputProcessor {
 
             }
         };
-        Label text = new Label("Welcome to a prototype version of The Tower 2. \nTo move the player either use the left and right arrow keys or A and D.\nYou can jump and climb ladders with the spacebar or the up arrow.\nAs you progress" +
-                " through the game your tree will grow larger\n based on how well you do in the game and how sustainable your actions are.\nMake sure to keep your eye out for special collectables.\nWhen you are ready press" +
-                " the button below to start.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+        Label text = new Label("Welcome to a prototype version of The Tower 2. \nTo move the player either use the left and right arrow keys or A and D." +
+                "\nYou can jump and climb ladders with the spacebar or the up arrow.\nAs you progress through the game your tree will grow larger\n based on" +
+                " how well you do in the game and how sustainable your actions are.\nMake sure to keep your eye out for special collectables.\nWhen you are" +
+                " ready press the button below to start.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         d.getContentTable().align(Align.center);
         d.align(Align.topLeft);
         text.setAlignment(Align.center);
@@ -254,7 +256,8 @@ public class Game implements Screen, InputProcessor {
         for (MovingPlatform platform : movingPlatforms) {
             for (int i = 1; i <= platform.numTextures; i++) {
                 if (!platform.texture.equals("NONE")) {
-                    batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH / 2f + (i - 1) * manager.get(platform.texture, Texture.class).getWidth(),
+                    batch.draw(manager.get(platform.texture, Texture.class), platform.currentX - camera.position.x + WIDTH / 2f + (i - 1)
+                                    * manager.get(platform.texture, Texture.class).getWidth(),
                             platform.currentY - camera.position.y + HEIGHT / 2f);
                 }
             }
@@ -393,7 +396,8 @@ public class Game implements Screen, InputProcessor {
                     if ((Boolean) object.getProperties().get("Active")) {
                         try {
                             if (object.getProperties().get("MovingPlatform", Boolean.class)) {
-                                activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height, object.getProperties().get("ID", Integer.class)
+                                activeObjects.add(new MovingPlatform(this, rect.x, rect.y, rect.width, rect.height
+                                        , object.getProperties().get("ID", Integer.class)
                                         , object.getProperties().get("Texture", String.class), object.getProperties().get("Speed", float.class)
                                         , object.getProperties().get("numTextures", int.class), object.getProperties().get("collisionWidth", float.class)
                                         , object.getProperties().get("collisionHeight", float.class), object));
@@ -413,7 +417,8 @@ public class Game implements Screen, InputProcessor {
                         }
                         try {
                             if (object.getProperties().get("ToggleDeath", Boolean.class))
-                                activeObjects.add(new ToggleDeath(this, rect.x, rect.y, rect.width, rect.height, object, object.getProperties().get("control", String.class)));
+                                activeObjects.add(new ToggleDeath(this, rect.x, rect.y, rect.width, rect.height, object
+                                        , object.getProperties().get("control", String.class)));
                         } catch (NullPointerException ignored) {
                         }
                         if (object.getProperties().get("OrGate", Boolean.class)) {
@@ -453,7 +458,8 @@ public class Game implements Screen, InputProcessor {
         d1.toFront();
         Label text1;
         if (timeTrial) {
-            text1 = new Label("You completed the game dying " + deathCounter + " times with a time of " + Math.round(timeTrialTime * 10) / 10f + " seconds.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+            text1 = new Label("You completed the game dying " + deathCounter + " times with a time of " +
+                    Math.round(timeTrialTime * 10) / 10f + " seconds.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         } else {
             text1 = new Label("You completed the game dying " + deathCounter + " times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         }
@@ -468,8 +474,9 @@ public class Game implements Screen, InputProcessor {
         d1.setWidth(466);
         d1.setHeight(168);
 
-        Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " + (int) ((float) player.score / MAX_SCORE * 100) + "%"
-                + ".\nYou collected " + player.carPartsFound + " electric car parts.\nYou died " + deathCounter + " times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
+        Label text = new Label("Congratulations you have finished the prototype version of The Tower 2.\nYou had a total tree growth of " +
+                (int) ((float) player.score / MAX_SCORE * 100) + "%.\nYou collected " + player.carPartsFound + " electric car parts.\nYou died " +
+                deathCounter + " times.", new Skin(Gdx.files.internal("expeeSkin/expee-ui.json")));
         d.getContentTable().align(Align.center);
         d.align(Align.topLeft);
         text.setAlignment(Align.center);

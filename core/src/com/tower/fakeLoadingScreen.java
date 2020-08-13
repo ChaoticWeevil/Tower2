@@ -18,16 +18,13 @@ import com.badlogic.gdx.utils.Timer;
 import java.util.Random;
 
 public class fakeLoadingScreen implements Screen {
-    private Stage stage = new Stage();
-    private Game parent;
-    private BitmapFont font = new BitmapFont();
-    private BitmapFont fontSmall = new BitmapFont();
-    private Skin skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"));
-    private SpriteBatch batch = new SpriteBatch();
+    private final Stage stage = new Stage();
+    private final Game parent;
+    private final BitmapFont font = new BitmapFont();
+    private final SpriteBatch batch = new SpriteBatch();
     private String loadingDots = ".";
     private float loadingTime = 0;
-    private String loadingMessage;
-    private Texture t;
+    private final Texture t;
 
     fakeLoadingScreen(final Game parent) {
         final int maxScore = 900;
@@ -41,12 +38,14 @@ public class fakeLoadingScreen implements Screen {
         this.parent = parent;
         stage.setViewport(parent.viewport);
         font.setColor(Color.WHITE);
+        BitmapFont fontSmall = new BitmapFont();
         fontSmall.setColor(Color.WHITE);
         font.getData().setScale(2);
 
         Random rand = new Random();
-        loadingMessage = parent.loadingMessages.get(rand.nextInt(parent.loadingMessages.size()));
+        String loadingMessage = parent.loadingMessages.get(rand.nextInt(parent.loadingMessages.size()));
 
+        Skin skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"));
         Label lbl = new Label(loadingMessage, skin);
         lbl.setVisible(true);
         lbl.setWidth(1300);

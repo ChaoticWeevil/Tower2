@@ -19,7 +19,7 @@ public class Menu implements Screen {
     Stage play_stage;
     Stage death_stage;
     Stage stage;
-    private Main parent;
+    private final Main parent;
     TextButton play;
     TextButton exit;
     TextButton new_game;
