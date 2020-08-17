@@ -15,7 +15,7 @@ public class Death extends gameObject {
 
     @Override
     public void onEnter() {
-        parent.player.respawn();
+        if (!parent.noclip) parent.player.respawn();
 
     }
 

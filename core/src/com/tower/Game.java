@@ -79,6 +79,7 @@ public class Game implements Screen, InputProcessor {
     boolean hardcore;
     boolean timeTrial;
     float timeTrialTime = 0;
+    public boolean noclip;
 
     public Game(final Main parent, String[] level_set, boolean hardcore, boolean timeTrial) {
         this.parent = parent;

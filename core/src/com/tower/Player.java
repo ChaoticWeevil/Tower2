@@ -1,6 +1,7 @@
 package com.tower;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
@@ -259,8 +260,19 @@ public class Player {
             }
         }
 
-        parent.camera.position.x += x_velocity;
-        parent.camera.position.y += y_velocity;
+        if (parent.noclip) {
+            int speed = 10;
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) speed = 20;
+            if (left) parent.camera.position.x -= speed;
+            if (right) parent.camera.position.x += speed;
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) parent.camera.position.y -= speed;
+            if (jumping) parent.camera.position.y += speed;
+        }
+        else {
+            parent.camera.position.x += x_velocity;
+            parent.camera.position.y += y_velocity;
+        }
+
 
         if (onMovingPlatform) {
             if (movingPlatform.currentDirection.equals("RIGHT")) {
@@ -285,7 +297,6 @@ public class Player {
             respawn();
         }
     }
-
 
     public void respawn() {
         parent.deathCounter ++;

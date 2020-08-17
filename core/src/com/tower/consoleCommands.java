@@ -29,5 +29,6 @@ public class consoleCommands extends CommandExecutor {
         game.loadingScreens = value;
     }
     public void kill () {game.player.respawn();}
+    public void noclip () {game.noclip = !game.noclip;}
 
 }
